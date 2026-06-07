@@ -1,0 +1,6 @@
+{
+  "name": "Lanari Tech Portal",
+  "description": "Lanari Tech Ltd Precision Engineering Hub, including Public Ecosystem Showcase, Developer Training Journey, SaaS Products portfolio, and Portal Gateway Dashboard.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

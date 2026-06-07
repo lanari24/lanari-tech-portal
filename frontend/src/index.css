@@ -1,0 +1,151 @@
+@import "tailwindcss";
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=JetBrains+Mono:wght@400;500;700&family=Geist:wght@400;500;700;800&display=swap');
+
+@theme {
+  --color-surface: #101415;
+  --color-on-surface-variant: #c7c6cc;
+  --color-inverse-primary: #5a5e6d;
+  --color-tertiary: #b7c8e1;
+  --color-on-tertiary-fixed-variant: #38485d;
+  --color-on-background: #e0e3e5;
+  --color-primary-fixed: #dfe2f3;
+  --color-on-tertiary-fixed: #0b1c30;
+  --color-on-tertiary-container: #6d7d94;
+  --color-surface-container-lowest: #0b0f10;
+  --color-secondary-fixed: #56ffa8;
+  --color-inverse-on-surface: #2d3133;
+  --color-outline: #909096;
+  --color-tertiary-fixed-dim: #b7c8e1;
+  --color-error-container: #93000a;
+  --color-surface-bright: #363a3b;
+  --color-primary-container: #0a0e1a;
+  --color-inverse-surface: #e0e3e5;
+  --color-on-secondary-fixed-variant: #00522f;
+  --color-on-tertiary: #213145;
+  --color-on-secondary-container: #007243;
+  --color-on-primary-fixed: #171b28;
+  --color-surface-container: #1d2022;
+  --color-background: #101415;
+  --color-surface-tint: #c3c6d7;
+  --color-on-primary: #2c303d;
+  --color-tertiary-container: #000f22;
+  --color-surface-container-highest: #323537;
+  --color-secondary: #f5fff4;
+  --color-primary: #c3c6d7;
+  --color-on-secondary: #00391f;
+  --color-outline-variant: #46464c;
+  --color-on-primary-container: #777b8a;
+  --color-primary-fixed-dim: #c3c6d7;
+  --color-surface-container-high: #272a2c;
+  --color-on-primary-fixed-variant: #434654;
+  --color-surface-container-low: #191c1e;
+  --color-surface-variant: #323537;
+  --color-surface-dim: #101415;
+  --color-on-error: #690005;
+  --color-on-surface: #e0e3e5;
+  --color-secondary-fixed-dim: #00e38b;
+  --color-error: #ffb4ab;
+  --color-tertiary-fixed: #d3e4fe;
+  --color-secondary-container: #16ff9e;
+  --color-on-secondary-fixed: #002110;
+
+  --font-sans: "Inter", "Geist", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+}
+
+@layer base {
+  body {
+    background-color: #101415;
+    color: #e0e3e5;
+    overflow-x: hidden;
+    font-family: var(--font-sans);
+  }
+}
+
+/* Structural Technical Effects */
+.grid-overlay {
+    background-image: 
+        linear-gradient(to right, rgba(70, 70, 76, 0.15) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(70, 70, 76, 0.15) 1px, transparent 1px);
+    background-size: 64px 64px;
+}
+
+.blueprint-accent {
+    background-image: 
+        linear-gradient(to right, rgba(86, 255, 168, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(86, 255, 168, 0.05) 1px, transparent 1px);
+    background-size: 16px 16px;
+}
+
+.blueprint-grid {
+    background-image: 
+        linear-gradient(to right, rgba(144, 144, 150, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(144, 144, 150, 0.05) 1px, transparent 1px);
+    background-size: 32px 32px;
+}
+
+.growth-glow {
+    filter: blur(120px);
+    background: rgba(86, 255, 168, 0.04);
+}
+
+.architectural-border {
+    position: relative;
+}
+
+.architectural-border::before {
+    content: '';
+    position: absolute;
+    top: -1px; left: -1px;
+    width: 10px; height: 10px;
+    border-top: 2px solid #56ffa8;
+    border-left: 2px solid #56ffa8;
+    pointer-events: none;
+}
+
+.architectural-border::after {
+    content: '';
+    position: absolute;
+    bottom: -1px; right: -1px;
+    width: 10px; height: 10px;
+    border-bottom: 2px solid #56ffa8;
+    border-right: 2px solid #56ffa8;
+    pointer-events: none;
+}
+
+.text-outline-refined {
+    -webkit-text-stroke: 1px rgba(144, 144, 150, 0.4);
+    color: transparent;
+}
+
+/* Scanline Animation */
+.scanline {
+    width: 100%;
+    height: 1.5px;
+    background: rgba(86, 255, 168, 0.08);
+    position: absolute;
+    animation: scan 10s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes scan {
+    from { top: 0; }
+    to { top: 100%; }
+}
+
+/* Custom technical scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0b0f10;
+}
+::-webkit-scrollbar-thumb {
+  background: #46464c;
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #56ffa8;
+}

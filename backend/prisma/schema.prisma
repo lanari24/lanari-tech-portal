@@ -1,0 +1,140 @@
+// Lanari Tech Portal — data model
+// Backed by PostgreSQL. Generated client used across the backend modules.
+
+generator client {
+  provider      = "prisma-client-js"
+  // native = local dev; linux-musl-openssl-3.0.x = node:20-alpine containers.
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  CLIENT
+  STUDENT
+  ADMIN
+}
+
+enum ProjectStatus {
+  ACTIVE
+  PIPELINE
+  COMPLETED
+}
+
+enum ResourcePriority {
+  CRITICAL
+  STANDARD
+  HIGH
+}
+
+enum ResourceStatus {
+  ACTIVE
+  SYNC_WAIT
+  TERMINATED
+}
+
+enum DocumentCategory {
+  INFRASTRUCTURE
+  CRYPTOGRAPHY
+  TOPOLOGY
+  OTHER
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  ref          String   @unique // human-facing access identifier e.g. CLI-402-990
+  name         String?
+  role         Role     @default(CLIENT)
+  passwordHash String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  settings      UserSettings?
+  refreshTokens RefreshToken[]
+  projects      Project[]
+  documents     ResourceDocument[]
+  events        MentorshipEvent[]
+
+  @@index([role])
+}
+
+model RefreshToken {
+  id        String    @id @default(uuid()) // serves as the JWT jti
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  expiresAt DateTime
+  revokedAt DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([userId])
+}
+
+model UserSettings {
+  id               String  @id @default(cuid())
+  user             User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId           String  @unique
+  loadCapacity     Float   @default(24.8)
+  uplinkActive     Boolean @default(true)
+  complianceAlerts Boolean @default(true)
+}
+
+model Project {
+  id           String        @id @default(cuid())
+  name         String
+  codeName     String
+  client       String
+  leadEngineer String
+  progress     Int           @default(0)
+  status       ProjectStatus @default(PIPELINE)
+  owner        User?         @relation(fields: [ownerId], references: [id], onDelete: SetNull)
+  ownerId      String?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  @@index([ownerId])
+  @@index([status])
+}
+
+model SystemResource {
+  id             String           @id @default(cuid())
+  resourceCode   String           @unique // e.g. RES_LN_7782
+  name           String
+  allocationNode String
+  priority       ResourcePriority @default(STANDARD)
+  status         ResourceStatus   @default(ACTIVE)
+  activity       String           @default("--")
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+}
+
+model ResourceDocument {
+  id         String           @id @default(cuid())
+  title      String
+  fileRef    String
+  category   DocumentCategory @default(INFRASTRUCTURE)
+  storageKey String? // MinIO object key for the uploaded asset
+  imageUrl   String?
+  imageAlt   String?
+  owner      User?            @relation(fields: [ownerId], references: [id], onDelete: SetNull)
+  ownerId    String?
+  createdAt  DateTime         @default(now())
+
+  @@index([ownerId])
+}
+
+model MentorshipEvent {
+  id         String   @id @default(cuid())
+  timeLabel  String
+  timeSub    String
+  title      String
+  instructor String
+  user       User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  userId     String?
+  createdAt  DateTime @default(now())
+
+  @@index([userId])
+}
