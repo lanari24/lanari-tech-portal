@@ -1,0 +1,63 @@
+name: Deploy Portal to Contabo
+
+# Auto-deploys the full Docker stack on every push to main.
+# The server runs docker-compose.prod.yml; this job rsyncs the repo and
+# rebuilds/restarts the stack over SSH. The server's .env (secrets) is never
+# touched — it lives only on the server.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  DEPLOY_HOST: 176.126.87.142
+  DEPLOY_USER: root
+  DEPLOY_PATH: /opt/lanari-portal
+
+jobs:
+  deploy:
+    name: Build & deploy stack
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure SSH
+        # DEPLOY_SSH_KEY = base64 of the ed25519 private key (single line).
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.DEPLOY_SSH_KEY }}" | base64 -d > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keygen -y -f ~/.ssh/deploy_key > /dev/null
+          ssh-keyscan -H "$DEPLOY_HOST" >> ~/.ssh/known_hosts 2>/dev/null
+
+      - name: Sync repo to server
+        # .env stays on the server (excluded). node_modules/dist are build
+        # artifacts rebuilt inside the containers.
+        run: |
+          rsync -az --delete \
+            -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=accept-new" \
+            --exclude ".git" \
+            --exclude "node_modules" \
+            --exclude "dist" \
+            --exclude ".env" \
+            ./ "$DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH/"
+
+      - name: Rebuild & restart stack
+        run: |
+          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=accept-new \
+            "$DEPLOY_USER@$DEPLOY_HOST" \
+            "DEPLOY_PATH='$DEPLOY_PATH' bash -s" <<'EOSSH'
+          set -euo pipefail
+          cd "$DEPLOY_PATH"
+          docker compose -f docker-compose.prod.yml up -d --build --remove-orphans
+          docker image prune -f
+          # Wait for the API to report healthy through the edge.
+          for i in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:8080/api/health >/dev/null 2>&1; then
+              echo "✅ API healthy"; break
+            fi
+            echo "waiting for API... ($i)"; sleep 3
+          done
+          EOSSH

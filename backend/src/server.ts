@@ -2,6 +2,8 @@ import { createApp } from './app.js';
 import { env } from './env.js';
 import { prisma } from './lib/prisma.js';
 import { connectRedis, redis } from './lib/redis.js';
+import { ensureBucket } from './lib/minio.js';
+import { startHeartbeat, stopHeartbeat } from './lib/heartbeat.js';
 
 async function main() {
   // Eagerly connect dependencies so readiness reflects reality immediately.
@@ -9,6 +11,8 @@ async function main() {
   await connectRedis().catch((err) =>
     console.warn('[startup] Redis not ready yet:', err.message),
   );
+  await ensureBucket();
+  startHeartbeat();
 
   const app = createApp();
   const server = app.listen(env.PORT, () => {
@@ -17,6 +21,7 @@ async function main() {
 
   const shutdown = async (signal: string) => {
     console.log(`\n${signal} received — shutting down...`);
+    stopHeartbeat();
     server.close();
     await prisma.$disconnect();
     redis.disconnect();
