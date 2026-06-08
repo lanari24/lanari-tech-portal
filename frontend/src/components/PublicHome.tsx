@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { ArrowRight, Cpu, Shield, TrendingUp } from "lucide-react";
+import Reveal from "./Reveal";
 
 interface PublicHomeProps {
   onInitialize: () => void;
@@ -44,7 +45,7 @@ export default function PublicHome({ onInitialize, mouseCoords }: PublicHomeProp
       <div className="relative z-10 px-6 md:px-16 pt-12 pb-32 max-w-7xl mx-auto space-y-40">
         
         {/* ================= HERO SECTION ================= */}
-        <section className="space-y-10">
+        <Reveal as="section" className="space-y-10">
           {/* Active State Sub-indicator */}
           <div className="flex items-center gap-4 select-none">
             <span className="font-mono text-xs text-[#16ff9e] uppercase tracking-[0.3em] font-bold">
@@ -61,7 +62,7 @@ export default function PublicHome({ onInitialize, mouseCoords }: PublicHomeProp
                 BUILDING SOFTWARE. <br />
                 BUILDING DEVELOPERS. <br />
                 <span className="text-outline-refined block md:inline">BUILDING AFRICA'S</span> <br className="hidden md:inline" />
-                <span className="text-[#16ff9e] font-extrabold tracking-tight drop-shadow-[0_0_15px_rgba(22,255,158,0.2)]">
+                <span className="text-gradient-accent font-extrabold tracking-tight drop-shadow-[0_0_15px_rgba(22,255,158,0.2)]">
                   DIGITAL FUTURE
                 </span>
               </h1>
@@ -145,10 +146,10 @@ export default function PublicHome({ onInitialize, mouseCoords }: PublicHomeProp
             <span>ELEV: 1567M_KALI</span>
             <span>REF_GRID: RR_PRT_01</span>
           </div>
-        </section>
+        </Reveal>
 
         {/* ================= OUR MISSION SECTION ================= */}
-        <section className="bg-surface-container-lowest/40 border border-outline-variant p-8 md:p-16 architectural-border">
+        <Reveal as="section" className="bg-surface-container-lowest/40 border border-outline-variant p-8 md:p-16 architectural-border">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
             {/* Left title column */}
             <div className="lg:col-span-5 space-y-5">
@@ -197,10 +198,10 @@ export default function PublicHome({ onInitialize, mouseCoords }: PublicHomeProp
               </div>
             </div>
           </div>
-        </section>
+        </Reveal>
 
         {/* ================= INTEGRATED ECOSYSTEM SECTION ================= */}
-        <section className="space-y-12">
+        <Reveal as="section" className="space-y-12">
           {/* Section Header */}
           <div className="flex justify-between items-end border-b border-outline-variant/40 pb-6 select-none">
             <div>
@@ -310,10 +311,10 @@ export default function PublicHome({ onInitialize, mouseCoords }: PublicHomeProp
               </div>
             </div>
           </div>
-        </section>
+        </Reveal>
 
         {/* ================= CORE VALUES SECTION ================= */}
-        <section className="grid grid-cols-1 lg:grid-cols-12 gap-8 pt-12 border-t border-outline-variant/40">
+        <Reveal as="section" className="grid grid-cols-1 lg:grid-cols-12 gap-8 pt-12 border-t border-outline-variant/40">
           {/* Left Title and Specs column */}
           <div className="lg:col-span-4 space-y-6">
             <h2 className="font-sans text-4xl md:text-5xl font-extrabold text-white uppercase leading-none">
@@ -358,10 +359,10 @@ export default function PublicHome({ onInitialize, mouseCoords }: PublicHomeProp
               ))}
             </ul>
           </div>
-        </section>
+        </Reveal>
 
         {/* ================= FINAL CTA SECTION ================= */}
-        <section className="relative overflow-hidden select-none">
+        <Reveal as="section" className="relative overflow-hidden select-none">
           <div className="absolute inset-0 blueprint-accent opacity-15 pointer-events-none"></div>
           <div className="relative z-10 max-w-5xl mx-auto py-20 border border-outline-variant/60 bg-[#0b0f10]/90 text-center backdrop-blur-sm px-6 md:px-12 architectural-border space-y-10">
             <span className="font-mono text-xs text-[#16ff9e] block tracking-[0.4em] uppercase font-bold">
@@ -383,7 +384,7 @@ export default function PublicHome({ onInitialize, mouseCoords }: PublicHomeProp
               </div>
             </div>
           </div>
-        </section>
+        </Reveal>
 
       </div>
     </div>

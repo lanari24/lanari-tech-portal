@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { ArrowRight, Terminal, GraduationCap, Code2, ShieldAlert, CheckSquare } from "lucide-react";
+import Reveal from "./Reveal";
 
 interface PublicTrainingProps {
   onShowNotification: (msg: string) => void;
@@ -49,7 +50,7 @@ export default function PublicTraining({ onShowNotification, onInitialize, mouse
       <div className="relative z-10 px-6 md:px-16 pt-12 pb-32 max-w-7xl mx-auto space-y-32">
         
         {/* Training Hero Section */}
-        <section className="grid grid-cols-12 gap-8 items-center">
+        <Reveal as="section" className="grid grid-cols-12 gap-8 items-center">
           <div className="col-span-12 md:col-span-8 flex flex-col justify-center space-y-6">
             <span className="font-mono text-xs text-secondary-fixed uppercase tracking-[0.2em] block font-bold">
               [ TRAINING_PROTOCOL_2024 ]
@@ -91,10 +92,10 @@ export default function PublicTraining({ onShowNotification, onInitialize, mouse
               <div className="absolute inset-0 bg-gradient-to-t from-[#101415]/75 to-transparent opacity-60 pointer-events-none"></div>
             </div>
           </div>
-        </section>
+        </Reveal>
 
         {/* The Roadmap Journey Timeline */}
-        <section className="space-y-16">
+        <Reveal as="section" className="space-y-16">
           <div className="flex justify-between items-end border-b border-outline-variant pb-4">
             <h2 className="text-3xl md:text-5xl font-extrabold text-white uppercase tracking-tight">
               The Developer Journey
@@ -220,10 +221,10 @@ export default function PublicTraining({ onShowNotification, onInitialize, mouse
 
             </div>
           </div>
-        </section>
+        </Reveal>
 
         {/* Bento Stats & Geography integrations */}
-        <section className="bg-surface-container-lowest/50 border border-outline-variant p-6 md:p-12 h-auto space-y-8 architectural-border">
+        <Reveal as="section" className="bg-surface-container-lowest/50 border border-outline-variant p-6 md:p-12 h-auto space-y-8 architectural-border">
           <div className="grid grid-cols-12 gap-8">
             {/* Kigali HQ large map mockup */}
             <div className="col-span-12 lg:col-span-7 border border-outline-variant p-6 md:p-8 flex flex-col justify-end relative overflow-hidden group min-h-[350px] md:min-h-[450px]">
@@ -294,10 +295,10 @@ export default function PublicTraining({ onShowNotification, onInitialize, mouse
 
             </div>
           </div>
-        </section>
+        </Reveal>
 
         {/* Dynamic Apply Widget form section */}
-        <section id="apply-cohort" className="bg-[#101415] border border-outline-variant py-12 px-6 md:px-16 flex flex-col lg:flex-row items-center justify-between gap-12 architectural-border">
+        <Reveal as="section" id="apply-cohort" className="bg-[#101415] border border-outline-variant py-12 px-6 md:px-16 flex flex-col lg:flex-row items-center justify-between gap-12 architectural-border">
           <div className="max-w-2xl text-center lg:text-left space-y-4">
             <h2 className="text-3xl md:text-4xl font-extrabold text-white uppercase leading-tight">
               Start Your Engineering Lifecycle.
@@ -346,7 +347,7 @@ export default function PublicTraining({ onShowNotification, onInitialize, mouse
               </span>
             </div>
           </div>
-        </section>
+        </Reveal>
 
       </div>
     </div>

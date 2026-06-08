@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { ArrowRight, Sparkles, HardDrive, Compass, ServerCrash, Share2, CheckCircle2, ChevronRight } from "lucide-react";
+import Reveal from "./Reveal";
 
 interface PublicProductsProps {
   onShowNotification: (msg: string) => void;
@@ -56,7 +57,7 @@ export default function PublicProducts({ onShowNotification, mouseCoords }: Publ
       <div className="relative z-10 px-6 md:px-16 pt-12 pb-32 max-w-7xl mx-auto space-y-32">
         
         {/* Header section with live stats */}
-        <section className="grid grid-cols-12 gap-8 items-end">
+        <Reveal as="section" className="grid grid-cols-12 gap-8 items-end">
           <div className="col-span-12 lg:col-span-8 space-y-4">
             <span className="font-mono text-xs text-secondary-fixed uppercase tracking-widest block font-bold">
               Architectural Engineering // Systems v4.3
@@ -80,10 +81,10 @@ export default function PublicProducts({ onShowNotification, mouseCoords }: Publ
               </div>
             </div>
           </div>
-        </section>
+        </Reveal>
 
         {/* Product Gallery Grid */}
-        <section className="space-y-16">
+        <Reveal as="section" className="space-y-16">
           
           {/* LanariFlow ERP Highlight */}
           <div className="border border-outline-variant bg-surface-container-low architectural-border overflow-hidden">
@@ -371,7 +372,7 @@ export default function PublicProducts({ onShowNotification, mouseCoords }: Publ
             </div>
           </div>
 
-        </section>
+        </Reveal>
       </div>
     </div>
   );

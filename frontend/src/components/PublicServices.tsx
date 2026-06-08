@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Terminal, Database, Code, ShieldCheck, Cpu, ArrowRight, Activity, CloudLightning } from "lucide-react";
+import Reveal from "./Reveal";
 
 interface PublicServicesProps {
   onShowNotification: (msg: string) => void;
@@ -82,13 +83,13 @@ export default function PublicServices({ onShowNotification, mouseCoords }: Publ
       <div className="relative z-10 px-6 md:px-16 pt-12 pb-32 max-w-7xl mx-auto space-y-32">
         
         {/* Services Hero Header */}
-        <section className="grid grid-cols-12 gap-8 items-end relative min-h-[300px]">
+        <Reveal as="section" className="grid grid-cols-12 gap-8 items-end relative min-h-[300px]">
           <div className="col-span-12 md:col-span-8 space-y-4">
             <span className="font-mono text-xs text-secondary-fixed uppercase tracking-[0.2em] block font-bold">
               [ DOCUMENT_REF: LTS-2024 ]
             </span>
             <h1 className="text-5xl md:text-7xl font-extrabold uppercase text-white leading-none tracking-tight">
-              WORLD-CLASS SOFTWARE <span className="text-secondary-fixed">DEVELOPMENT.</span>
+              WORLD-CLASS SOFTWARE <span className="text-gradient-accent">DEVELOPMENT.</span>
             </h1>
             <p className="text-on-surface-variant font-sans text-base md:text-lg max-w-2xl leading-relaxed">
               Architecting high-performance digital ecosystems through rigorous engineering, mathematical precision, and an unwavering commitment to structural integrity.
@@ -117,10 +118,10 @@ export default function PublicServices({ onShowNotification, mouseCoords }: Publ
               <circle cx="200" cy="200" r="50" stroke="#56ffa8" strokeDasharray="4 4" strokeWidth="0.5"></circle>
             </svg>
           </div>
-        </section>
+        </Reveal>
 
         {/* Services technical modules grid */}
-        <section className="space-y-12">
+        <Reveal as="section" className="space-y-12">
           <div className="max-w-4xl space-y-4">
             <h2 className="text-3xl md:text-5xl font-extrabold uppercase text-white tracking-tight">
               Software Development Services
@@ -155,10 +156,10 @@ export default function PublicServices({ onShowNotification, mouseCoords }: Publ
               </div>
             ))}
           </div>
-        </section>
+        </Reveal>
 
         {/* Development Sequence Sequence Diagram component */}
-        <section className="space-y-8">
+        <Reveal as="section" className="space-y-8">
           <div className="border border-outline-variant p-6 md:p-12 relative overflow-hidden bg-surface-container-lowest architectural-border">
             <div className="absolute top-0 right-0 p-4 font-mono text-[9px] text-outline rotate-90 origin-top-right tracking-widest select-none">
               PROTOCOL_V2.0_SEQ
@@ -198,10 +199,10 @@ export default function PublicServices({ onShowNotification, mouseCoords }: Publ
               ))}
             </div>
           </div>
-        </section>
+        </Reveal>
 
         {/* Technical Showcase: Bento Grid Grid */}
-        <section className="space-y-8">
+        <Reveal as="section" className="space-y-8">
           <div className="grid grid-cols-12 gap-8">
             
             {/* Large feature image and banner */}
@@ -263,7 +264,7 @@ export default function PublicServices({ onShowNotification, mouseCoords }: Publ
             </div>
 
           </div>
-        </section>
+        </Reveal>
 
       </div>
     </div>
