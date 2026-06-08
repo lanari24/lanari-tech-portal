@@ -25,29 +25,29 @@ export default function PublicProducts({ onShowNotification, mouseCoords }: Publ
   const systemModules = [
     {
       id: "01",
-      title: "LOGISTICS_ENGINE",
-      desc: "Global-standard supply chain optimization software tailored for regional transport, cargo consolidation, and custom-house clearance integrations."
+      title: "Logistics",
+      desc: "Manage transport, shipping, and customs clearance in one place — built for how business works in the region."
     },
     {
       id: "02",
-      title: "TREASURY_MGMT",
-      desc: "Automated multi-currency ledger reconciliation, tax reporting compliant with local regulations, and instant financial transaction statements."
+      title: "Finance & Accounting",
+      desc: "Handle multiple currencies, stay on top of taxes and local rules, and get clear financial statements in seconds."
     },
     {
       id: "03",
-      title: "ANALYTICS_CORE",
-      desc: "Predictive machine modules modeling regional trade indexes, operational route bottlenecks, and warehouse inventory demand forecasting."
+      title: "Reports & Insights",
+      desc: "See what's selling, spot delays before they happen, and plan your stock with easy-to-read reports."
     }
   ];
 
   const handleRequestDemo = (e: React.FormEvent) => {
     e.preventDefault();
     if (!demoEmail) {
-      onShowNotification("Please provide a valid operator email address.");
+      onShowNotification("Please enter a valid email address.");
       return;
     }
     setDemoRequested(true);
-    onShowNotification(`SaaS Demo credentials dispatched to ${demoEmail} [NOMINAL]`);
+    onShowNotification(`Thanks! We'll send demo details to ${demoEmail} shortly.`);
   };
 
   return (
@@ -60,19 +60,19 @@ export default function PublicProducts({ onShowNotification, mouseCoords }: Publ
         <Reveal as="section" className="grid grid-cols-12 gap-8 items-end">
           <div className="col-span-12 lg:col-span-8 space-y-4">
             <span className="font-mono text-xs text-secondary-fixed uppercase tracking-widest block font-bold">
-              Architectural Engineering // Systems v4.3
+              Our Products
             </span>
             <h1 className="text-5xl md:text-7xl font-extrabold uppercase text-white leading-none tracking-tight">
-              SaaS Products
+              Software We Build
             </h1>
             <p className="text-on-surface-variant font-sans text-base md:text-lg max-w-3xl leading-relaxed">
-              We develop our own scalable software-as-a-service products that address everyday challenges for African businesses — affordable, locally relevant tools built with global standards, designed for accessibility and mobile-first usage.
+              We build our own ready-to-use software that solves everyday problems for African businesses — affordable, made for local needs, and easy to use on any phone or computer.
             </p>
           </div>
 
           <div className="col-span-12 lg:col-span-4 flex justify-end">
             <div className="border border-outline-variant p-6 bg-surface-container-lowest flex flex-col justify-center min-w-[220px] architectural-border">
-              <span className="font-mono text-xs text-outline mb-2">NETWORK_LATENCY</span>
+              <span className="font-mono text-xs text-outline mb-2">Response time</span>
               <div className="text-3xl font-mono font-bold text-secondary-fixed tracking-tight">
                 {latency}ms
               </div>
@@ -95,14 +95,14 @@ export default function PublicProducts({ onShowNotification, mouseCoords }: Publ
                 <div className="flex flex-wrap justify-between items-start gap-4">
                   <div>
                     <span className="font-mono text-xs text-secondary-fixed font-bold tracking-wider">
-                      CORE OPERATING SYSTEM
+                      Our flagship product
                     </span>
                     <h2 className="text-3xl md:text-5xl font-extrabold text-white uppercase tracking-tight mt-1">
-                      LanariFlow ERP
+                      LanariFlow
                     </h2>
                   </div>
                   <span className="font-mono text-xs text-outline border border-outline-variant px-3 py-1 bg-surface-container-lowest">
-                    SKU: LF-ERP-01
+                    Business software
                   </span>
                 </div>
 
@@ -120,19 +120,19 @@ export default function PublicProducts({ onShowNotification, mouseCoords }: Publ
                 {/* Precision Numbers */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                   <div className="border-l border-outline-variant pl-4">
-                    <span className="font-mono text-xs text-outline block mb-2">PRECISION_METRIC</span>
+                    <span className="font-mono text-xs text-outline block mb-2">Reliability</span>
                     <div className="text-2xl font-bold text-white font-mono">
                       99.99<span className="text-xs text-secondary-fixed ml-1 font-bold">% UPTIME</span>
                     </div>
                   </div>
                   <div className="border-l border-outline-variant pl-4">
-                    <span className="font-mono text-xs text-outline block mb-2">IO_LATENCY</span>
-                    <div className="text-2xl font-bold text-white font-mono">&lt;2ms</div>
+                    <span className="font-mono text-xs text-outline block mb-2">Speed</span>
+                    <div className="text-2xl font-bold text-white font-mono">Fast</div>
                   </div>
                   <div className="border-l border-outline-variant pl-4">
-                    <span className="font-mono text-xs text-outline block mb-2">SCALABILITY_INDEX</span>
+                    <span className="font-mono text-xs text-outline block mb-2">Capacity</span>
                     <div className="text-2xl font-bold text-white font-mono">
-                      10.0<span className="text-xs text-outline ml-1 font-mono">PB</span>
+                      Grows<span className="text-xs text-outline ml-1 font-mono">with you</span>
                     </div>
                   </div>
                 </div>
@@ -142,7 +142,7 @@ export default function PublicProducts({ onShowNotification, mouseCoords }: Publ
               <div className="col-span-12 lg:col-span-5 bg-surface-container-lowest/50 p-8 md:p-12 flex flex-col justify-between">
                 <div>
                   <h3 className="font-mono text-xs text-secondary-fixed mb-8 uppercase tracking-widest border-b border-outline-variant pb-4 font-bold">
-                    Engineering Specs
+                    What it does
                   </h3>
                   
                   <div className="space-y-4">
@@ -174,7 +174,7 @@ export default function PublicProducts({ onShowNotification, mouseCoords }: Publ
                   href="#whitepapers"
                   className="w-full mt-12 bg-secondary-fixed text-on-secondary px-6 py-4 font-mono text-xs font-bold uppercase tracking-widest hover:bg-white hover:text-black transition-all flex justify-between items-center text-[#002110]"
                 >
-                  <span>VIEW_SYSTEM_DOCS.MD</span>
+                  <span>Learn more</span>
                   <ChevronRight size={16} />
                 </a>
               </div>
@@ -189,7 +189,7 @@ export default function PublicProducts({ onShowNotification, mouseCoords }: Publ
                 <div className="flex justify-between items-start mb-8 gap-4">
                   <div>
                     <span className="font-mono text-xs text-secondary-fixed font-bold tracking-wider">
-                      INTER-ORG PROTOCOL
+                      Connecting businesses
                     </span>
                     <h2 className="text-2xl md:text-4xl font-extrabold text-white uppercase tracking-tight mt-1">
                       Ubumwe Connect
@@ -211,43 +211,43 @@ export default function PublicProducts({ onShowNotification, mouseCoords }: Publ
                     />
                     <div className="absolute inset-0 blueprint-accent opacity-20 pointer-events-none"></div>
                     <div className="absolute bottom-4 left-4 font-mono text-[9px] bg-background/85 px-2 py-1 border border-outline-variant">
-                      LIVE_MAP_V2.0
+                      Coverage map
                     </div>
                   </div>
 
                   {/* Encryption modules list */}
                   <div className="col-span-12 md:col-span-4 space-y-4">
                     <div className="bg-surface-container-lowest border border-outline-variant p-4">
-                      <span className="font-mono text-[10px] text-outline block mb-1">ENCRYPTION</span>
-                      <span className="font-mono text-xs text-white font-bold">AES-256-GCM</span>
+                      <span className="font-mono text-[10px] text-outline block mb-1">Security</span>
+                      <span className="font-mono text-xs text-white font-bold">Bank-level</span>
                     </div>
                     <div className="bg-surface-container-lowest border border-outline-variant p-4">
-                      <span className="font-mono text-[10px] text-outline block mb-1">THROUGHPUT</span>
-                      <span className="font-mono text-xs text-white font-bold">2.4 TB/S</span>
+                      <span className="font-mono text-[10px] text-outline block mb-1">Speed</span>
+                      <span className="font-mono text-xs text-white font-bold">Instant</span>
                     </div>
                     <div className="bg-surface-container-lowest border border-outline-variant p-4">
-                      <span className="font-mono text-[10px] text-outline block mb-1">NODES_ACTIVE</span>
-                      <span className="font-mono text-xs text-white font-bold">4,289</span>
+                      <span className="font-mono text-[10px] text-outline block mb-1">Businesses</span>
+                      <span className="font-mono text-xs text-white font-bold">4,200+</span>
                     </div>
                   </div>
                 </div>
 
                 <p className="font-sans text-on-surface-variant text-sm md:text-base leading-relaxed mb-8">
-                  A locally relevant, high-speed bridge designed for the unique regulatory landscape of pan-African trade, built to global security standards to integrate businesses instantly.
+                  A fast, secure way for businesses across Africa to connect and work together — built for local trade rules and ready to use right away.
                 </p>
 
                 <div className="pt-6 border-t border-outline-variant flex justify-between items-center mt-auto">
                   <div className="flex items-center gap-2">
                     <span className="w-2.5 h-2.5 rounded-full bg-secondary-fixed animate-pulse"></span>
                     <span className="font-mono text-[10px] text-secondary-fixed font-bold tracking-wider">
-                      PROTOCOL_STABLE
+                      Running smoothly
                     </span>
                   </div>
-                  <a 
-                    href="#ubumwe-docs" 
+                  <a
+                    href="#ubumwe-docs"
                     className="font-mono text-xs text-white hover:text-secondary-fixed transition-colors underline decoration-outline-variant"
                   >
-                    EXPLORE_ARCHITECTURE
+                    Learn more
                   </a>
                 </div>
               </div>
@@ -259,13 +259,13 @@ export default function PublicProducts({ onShowNotification, mouseCoords }: Publ
               {/* System health index visual */}
               <div className="border border-outline-variant bg-surface-container-low p-8 flex-grow space-y-6 architectural-border">
                 <span className="font-mono text-xs text-outline mb-6 block border-b border-outline-variant pb-2">
-                  SYSTEM_HEALTH_INDEX
+                  How it's doing
                 </span>
 
                 <div className="space-y-6">
                   <div>
                     <div className="flex justify-between items-center mb-2">
-                      <span className="text-sm font-sans text-white">Pan-African Node Mesh</span>
+                      <span className="text-sm font-sans text-white">Coverage across Africa</span>
                       <span className="font-mono text-xs text-secondary-fixed">99.98%</span>
                     </div>
                     <div className="h-1 bg-outline-variant">
@@ -275,7 +275,7 @@ export default function PublicProducts({ onShowNotification, mouseCoords }: Publ
 
                   <div>
                     <div className="flex justify-between items-center mb-2">
-                      <span className="text-sm font-sans text-white">Security Perimeter Integrity</span>
+                      <span className="text-sm font-sans text-white">Security</span>
                       <span className="font-mono text-xs text-secondary-fixed font-bold">ACTIVE</span>
                     </div>
                     <div className="h-1 bg-outline-variant">
@@ -285,8 +285,8 @@ export default function PublicProducts({ onShowNotification, mouseCoords }: Publ
 
                   <div>
                     <div className="flex justify-between items-center mb-2">
-                      <span className="text-sm font-sans text-white">Data Redundancy Clusters</span>
-                      <span className="font-mono text-xs text-secondary-fixed">SYNCING</span>
+                      <span className="text-sm font-sans text-white">Backups</span>
+                      <span className="font-mono text-xs text-secondary-fixed">UP TO DATE</span>
                     </div>
                     <div className="h-1 bg-outline-variant">
                       <div className="h-full bg-secondary-fixed" style={{ width: "88%" }}></div>
@@ -300,24 +300,24 @@ export default function PublicProducts({ onShowNotification, mouseCoords }: Publ
                 <form onSubmit={handleRequestDemo} className="w-full flex justify-between items-center">
                   <div className="space-y-1">
                     <span className="font-mono text-[10px] text-on-secondary-fixed opacity-70 block font-bold">
-                      SYSTEM_ACCESS
+                      Try it
                     </span>
                     {demoRequested ? (
                       <span className="font-sans text-xl font-bold uppercase tracking-tight text-[#002110] flex items-center gap-2 animate-pulse">
-                        <CheckCircle2 size={20} /> ACCESS REQUISITION DISPATCHED
+                        <CheckCircle2 size={20} /> REQUEST SENT — THANK YOU!
                       </span>
                     ) : (
                       <span className="font-sans text-2xl font-extrabold uppercase tracking-tighter text-[#002110]">
-                        Request Demo
+                        Book a Demo
                       </span>
                     )}
-                    
+
                     {!demoRequested && (
-                      <input 
+                      <input
                         type="email"
                         value={demoEmail}
                         onChange={(e) => setDemoEmail(e.target.value)}
-                        placeholder="ENTER OPERATOR EMAIL..."
+                        placeholder="Enter your email..."
                         onClick={(e) => e.stopPropagation()}
                         className="mt-2 bg-[#101415]/25 border border-outline-variant text-[#002110] font-mono text-xs p-2 placeholder:text-[#002110]/50 focus:outline-none focus:border-white w-full pr-8 max-w-sm"
                       />
@@ -340,23 +340,23 @@ export default function PublicProducts({ onShowNotification, mouseCoords }: Publ
           <div className="border border-outline-variant bg-surface-container-low overflow-hidden flex flex-col md:flex-row min-h-[380px] architectural-border">
             <div className="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center space-y-6">
               <span className="font-mono text-xs text-secondary-fixed uppercase tracking-wider block font-bold">
-                ENGINEERING_PRINCIPLE
+                Our promise
               </span>
               <h3 className="text-3xl md:text-4xl font-extrabold text-white leading-tight uppercase">
-                Structural Integrity by Design.
+                Built to Last.
               </h3>
               <p className="text-on-surface-variant font-sans text-sm md:text-base leading-relaxed">
-                Our products are built on a modular architecture that prevents systemic failure. Each component operates in a sandboxed environment with rigorous validation protocols, ensuring the highest standards of reliability for African enterprises.
+                Our products are built in small, well-tested parts, so a problem in one area never brings everything down. That means dependable software you can count on, day in and day out.
               </p>
               <div className="flex flex-wrap gap-4 pt-4">
-                <button 
-                  onClick={() => onShowNotification("Whitepaper compilation requested...")}
+                <button
+                  onClick={() => onShowNotification("Thanks for your interest! We'll be in touch.")}
                   className="border border-outline px-6 py-3 font-mono text-xs font-bold hover:bg-white hover:text-[#101415] transition-all cursor-pointer text-white"
                 >
-                  VIEW_WHITEPAPER.PDF
+                  Learn more
                 </button>
                 <span className="border border-outline-variant px-6 py-3 font-mono text-xs text-outline bg-surface-container-low select-none">
-                  TECH_STACK_V4.0
+                  Trusted technology
                 </span>
               </div>
             </div>

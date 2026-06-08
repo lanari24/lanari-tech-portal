@@ -12,67 +12,67 @@ export default function PublicServices({ onShowNotification, mouseCoords }: Publ
 
   const services = [
     {
-      ref: "SRV-01",
+      ref: "01",
       icon: <Terminal className="text-secondary-fixed text-2xl" />,
-      title: "Web Platforms and Enterprise Applications",
-      desc: "Scalable, high-performance web solutions built for complex business logic, enterprise analytics, and user-centric workflows."
+      title: "Websites & Web Apps",
+      desc: "Fast, easy-to-use websites and online tools that help your business run and grow."
     },
     {
-      ref: "SRV-02",
+      ref: "02",
       icon: <Cpu className="text-secondary-fixed text-2xl" />,
-      title: "Mobile Applications (Android and iOS)",
-      desc: "Native and cross-platform mobile experiences engineered for premium hardware execution and seamless user engagement."
+      title: "Mobile Apps (Android & iPhone)",
+      desc: "Smooth, reliable apps your customers can use anywhere, on any phone."
     },
     {
-      ref: "SRV-03",
+      ref: "03",
       icon: <ShieldCheck className="text-secondary-fixed text-2xl" />,
-      title: "APIs, System Integrations and Automation",
-      desc: "Connecting disparate corporate structures through robust API architecture, schemas, and automated data pipelines."
+      title: "Connecting Your Systems",
+      desc: "We link your different tools and apps so they share information and work together automatically."
     },
     {
-      ref: "SRV-04",
+      ref: "04",
       icon: <Database className="text-secondary-fixed text-2xl" />,
-      title: "Database Design",
-      desc: "Optimized data modeling and secure relational schemas ensuring absolute indexing integrity, security regulations, and rapid retrieval."
+      title: "Organising Your Data",
+      desc: "We set up safe, well-organised databases so your information is easy to find and always secure."
     },
     {
-      ref: "SRV-05",
+      ref: "05",
       icon: <CloudLightning className="text-secondary-fixed text-2xl" />,
-      title: "Cloud Deployment and Maintenance",
-      desc: "Reliable infrastructure orchestration (AWS, GCP, Cloud Run) and continuous deployment strategies for maximum uptime."
+      title: "Hosting & Maintenance",
+      desc: "We keep your software online, up to date, and running smoothly, so you don't have to worry about it."
     },
     {
-      ref: "SRV-06",
+      ref: "06",
       icon: <Activity className="text-secondary-fixed text-2xl" />,
-      title: "Technical Consulting for Digital Transformation",
-      desc: "Strategic advisory services modernizing legacy codebase configurations, adopting type safety, and planning infrastructure pipelines."
+      title: "Tech Advice & Support",
+      desc: "Not sure where to start? We'll help you plan, modernise old systems, and make the right tech choices."
     }
   ];
 
   const steps = [
     {
       num: "01.",
-      title: "Initialization",
-      badge: "01_INGESTION",
-      desc: "Requirements analysis, technical feasibility audit, and structural mapping of project scope."
+      title: "Plan",
+      badge: "01_PLAN",
+      desc: "We listen to what you need, check what's possible, and agree on a clear plan together."
     },
     {
       num: "02.",
-      title: "Architecture",
-      badge: "02_BLUEPRINT",
-      desc: "Drafting technical blueprints, database normalization, and strict API contract design."
+      title: "Design",
+      badge: "02_DESIGN",
+      desc: "We map out how everything will look and work before we start building."
     },
     {
       num: "03.",
-      title: "Compilation",
-      badge: "03_DEVELOPMENT",
-      desc: "Agile development sprints, modular assembly of components, and rigorous unit testing."
+      title: "Build",
+      badge: "03_BUILD",
+      desc: "We build your software step by step, testing carefully as we go."
     },
     {
       num: "04.",
-      title: "Deployment",
-      badge: "04_CD_DEPLOY",
-      desc: "Production launch, global CDN propagation, and 24/7 automated node health monitoring."
+      title: "Launch",
+      badge: "04_LAUNCH",
+      desc: "We go live, make sure everything works, and keep an eye on it around the clock."
     }
   ];
 
@@ -86,13 +86,13 @@ export default function PublicServices({ onShowNotification, mouseCoords }: Publ
         <Reveal as="section" className="grid grid-cols-12 gap-8 items-end relative min-h-[300px]">
           <div className="col-span-12 md:col-span-8 space-y-4">
             <span className="font-mono text-xs text-secondary-fixed uppercase tracking-[0.2em] block font-bold">
-              [ DOCUMENT_REF: LTS-2024 ]
+              What We Do
             </span>
             <h1 className="text-5xl md:text-7xl font-extrabold uppercase text-white leading-none tracking-tight">
-              WORLD-CLASS SOFTWARE <span className="text-gradient-accent">DEVELOPMENT.</span>
+              SOFTWARE BUILT THE <span className="text-gradient-accent">RIGHT WAY.</span>
             </h1>
             <p className="text-on-surface-variant font-sans text-base md:text-lg max-w-2xl leading-relaxed">
-              Architecting high-performance digital ecosystems through rigorous engineering, mathematical precision, and an unwavering commitment to structural integrity.
+              We build websites, apps, and software that are fast, dependable, and made to fit exactly what your business needs.
             </p>
           </div>
 
@@ -104,7 +104,7 @@ export default function PublicServices({ onShowNotification, mouseCoords }: Publ
             </div>
 
             <div className="text-right w-full">
-              <p className="font-mono text-xs text-outline uppercase tracking-widest mb-2">Service Spectrum</p>
+              <p className="font-mono text-xs text-outline uppercase tracking-widest mb-2">Our Services</p>
               <div className="h-px w-48 bg-outline-variant ml-auto"></div>
             </div>
           </div>
@@ -124,10 +124,10 @@ export default function PublicServices({ onShowNotification, mouseCoords }: Publ
         <Reveal as="section" className="space-y-12">
           <div className="max-w-4xl space-y-4">
             <h2 className="text-3xl md:text-5xl font-extrabold uppercase text-white tracking-tight">
-              Software Development Services
+              How We Can Help
             </h2>
             <p className="text-on-surface-variant text-base md:text-lg leading-relaxed">
-              We partner with startups, SMEs, NGOs, and enterprise consortia to design, compile, and maintain robust custom codebase tailored to modern operations.
+              We work with startups, small businesses, non-profits, and large organisations to design, build, and look after software made just for them.
             </p>
           </div>
 
@@ -135,7 +135,7 @@ export default function PublicServices({ onShowNotification, mouseCoords }: Publ
             {services.map((srv) => (
               <div 
                 key={srv.ref}
-                onClick={() => onShowNotification(`Information system configured for ${srv.title} [OK]`)}
+                onClick={() => onShowNotification(`We'd love to help with: ${srv.title}. Get in touch!`)}
                 className="border-r border-b border-outline-variant p-6 md:p-8 flex flex-col relative group hover:bg-surface-container-low/30 transition-all duration-300 cursor-pointer min-h-[300px]"
               >
                 <div className="absolute top-4 right-4 font-mono text-xs text-outline opacity-40">
@@ -162,11 +162,11 @@ export default function PublicServices({ onShowNotification, mouseCoords }: Publ
         <Reveal as="section" className="space-y-8">
           <div className="border border-outline-variant p-6 md:p-12 relative overflow-hidden bg-surface-container-lowest architectural-border">
             <div className="absolute top-0 right-0 p-4 font-mono text-[9px] text-outline rotate-90 origin-top-right tracking-widest select-none">
-              PROTOCOL_V2.0_SEQ
+              Step by step
             </div>
-            
+
             <h2 className="text-2xl md:text-3xl font-extrabold uppercase text-white mb-16 tracking-[0.2em] text-center">
-              Development Sequence
+              How We Work
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-4 gap-8 relative">
@@ -216,17 +216,17 @@ export default function PublicServices({ onShowNotification, mouseCoords }: Publ
               <div className="relative z-10 h-full flex flex-col justify-end">
                 <div className="w-fit mb-6">
                   <span className="font-mono text-xs text-secondary-fixed mb-2 block uppercase tracking-widest font-bold">
-                    [ CORE_SPECIALIZATION ]
+                    What we're great at
                   </span>
                   <div className="h-px w-full bg-secondary-fixed/40"></div>
                 </div>
                 <h2 className="text-3xl md:text-5xl font-extrabold uppercase leading-none tracking-tighter text-white">
-                  Security By <br />Architecture.
+                  Safe & Secure <br />from Day One.
                 </h2>
               </div>
 
               <div className="absolute top-6 right-6 border border-secondary-fixed px-3 py-1 font-mono text-[10px] text-secondary-fixed bg-[#101415]/80 backdrop-blur-sm">
-                ENCRYPTED_FLOW_STRICT
+                Always protected
               </div>
             </div>
 
@@ -234,22 +234,21 @@ export default function PublicServices({ onShowNotification, mouseCoords }: Publ
             <div className="col-span-12 md:col-span-4 flex flex-col gap-8">
               <div className="flex-grow bg-surface-container-lowest border border-outline-variant p-8 flex flex-col justify-center relative overflow-hidden group architectural-border">
                 <h4 className="font-mono text-xs text-outline uppercase mb-2 tracking-widest font-bold">
-                  Network Latency
+                  Speed
                 </h4>
                 <div className="flex items-end gap-2 mb-4">
                   <span className="text-4xl md:text-5xl font-extrabold text-[#56ffa8] leading-none font-sans">
-                    &lt;14
+                    Fast
                   </span>
-                  <span className="font-mono text-xs pb-2 text-outline">ms</span>
                 </div>
                 <p className="text-on-surface-variant text-xs leading-relaxed font-sans">
-                  Edge-optimized routing across 180+ global transit hubs.
+                  Quick to load for your customers, wherever they are.
                 </p>
               </div>
 
               <div className="flex-grow bg-surface-container-lowest border border-outline-variant p-8 flex flex-col justify-center relative overflow-hidden group architectural-border">
                 <h4 className="font-mono text-xs text-outline uppercase mb-2 tracking-widest font-bold">
-                  Availability
+                  Reliability
                 </h4>
                 <div className="flex items-end gap-2 mb-4">
                   <span className="text-4xl md:text-5xl font-extrabold text-white leading-none font-sans">
@@ -258,7 +257,7 @@ export default function PublicServices({ onShowNotification, mouseCoords }: Publ
                   <span className="font-mono text-xs pb-2 text-outline">%</span>
                 </div>
                 <p className="text-on-surface-variant text-xs leading-relaxed font-sans">
-                  Guaranteed uptime SLAs with active redundant failover triggers.
+                  Your tools stay online, with backups ready if anything goes wrong.
                 </p>
               </div>
             </div>

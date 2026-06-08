@@ -13,34 +13,34 @@ export default function PublicTraining({ onShowNotification, onInitialize, mouse
   const [cohortSubmitted, setCohortSubmitted] = useState<boolean>(false);
 
   const foundationCurriculum = [
-    "SYSTEM_ARCHITECTURE_BASIC",
-    "RUST_MEMORY_SAFETY_MODELS",
-    "DISTRIBUTED_DATA_CONSENSUS",
-    "LINUX_KERNEL_OPTIMIZATION"
+    "How websites and apps work",
+    "Writing your first programs",
+    "Working with databases",
+    "Using everyday developer tools"
   ];
 
   const pressureCurriculum = [
-    "HIGH_CONCURRENCY_LOAD_TESTING",
-    "FAULT_TOLERANT_SYSTEM_DESIGN",
-    "NETWORK_LATENCY_REDUCTION",
-    "CRYPTOGRAPHIC_SECURITY_STORES"
+    "Building real projects",
+    "Designing apps that don't crash",
+    "Making software fast",
+    "Keeping data safe and secure"
   ];
 
   const outcomeCurriculum = [
-    "STAFF_ENGINEER_TRAINEE",
-    "SECURITY_PROTOCOL_OFFICER",
-    "CORE_INFRASTRUCTURE_BUILDER",
-    "CONTRACT_INTEGRITY_AUDITOR"
+    "Junior Software Developer",
+    "Mobile App Developer",
+    "Web Developer",
+    "Quality & Testing Specialist"
   ];
 
   const handleApply = (e: React.FormEvent) => {
     e.preventDefault();
     if (!cohortName) {
-      onShowNotification("Please insert full candidate name for indexing.");
+      onShowNotification("Please enter your full name.");
       return;
     }
     setCohortSubmitted(true);
-    onShowNotification(`Candidate ${cohortName} registered for Cohort IV screening. [NOMINAL]`);
+    onShowNotification(`Thanks ${cohortName}! We've received your application and will be in touch.`);
   };
 
   return (
@@ -53,33 +53,33 @@ export default function PublicTraining({ onShowNotification, onInitialize, mouse
         <Reveal as="section" className="grid grid-cols-12 gap-8 items-center">
           <div className="col-span-12 md:col-span-8 flex flex-col justify-center space-y-6">
             <span className="font-mono text-xs text-secondary-fixed uppercase tracking-[0.2em] block font-bold">
-              [ TRAINING_PROTOCOL_2024 ]
+              Learn With Us
             </span>
             <h1 className="text-5xl md:text-7xl font-extrabold uppercase text-white leading-none tracking-tight">
               Developer Training <br />& Mentorship
             </h1>
             <p className="text-on-surface-variant font-sans text-base md:text-lg max-w-2xl leading-relaxed">
-              We train and mentor software developers through practical, project-based programs that bridge the gap between academic theory and high-end industry delivery. Our best graduates join our own teams — closing the loop between training and delivery.
+              We teach and mentor new software developers through hands-on, project-based programs that prepare you for real jobs. Our best graduates even join our own team.
             </p>
             <div className="flex flex-wrap gap-4 pt-4">
-              <a 
-                href="#apply-cohort" 
+              <a
+                href="#apply-cohort"
                 className="bg-secondary-fixed text-on-secondary px-6 md:px-8 py-4 font-mono text-xs font-bold uppercase tracking-widest hover:brightness-110 active:scale-95 transition-all text-[#002110]"
               >
-                Apply for Cohort IV
+                Apply Now
               </a>
-              <button 
-                onClick={() => onShowNotification("Fetching Curriculum Matrix in metadata registry... [OK]")}
+              <button
+                onClick={() => onShowNotification("Scroll down to see what you'll learn in the program.")}
                 className="border border-outline-variant text-on-surface-variant px-6 md:px-8 py-4 font-mono text-xs font-bold uppercase tracking-widest hover:border-secondary-fixed hover:text-white transition-all cursor-pointer background-transparent"
               >
-                View Curriculum
+                See the Program
               </button>
             </div>
           </div>
 
           <div className="col-span-12 md:col-span-4 relative border-l border-outline-variant p-6 md:p-8">
             <div className="absolute top-0 right-0 p-4 font-mono text-[9px] text-outline opacity-40 select-none">
-              LNRI_SYST_MAP_01
+              Our studio
             </div>
             
             <div className="w-full relative overflow-hidden bg-primary-container border border-outline-variant group">
@@ -98,9 +98,9 @@ export default function PublicTraining({ onShowNotification, onInitialize, mouse
         <Reveal as="section" className="space-y-16">
           <div className="flex justify-between items-end border-b border-outline-variant pb-4">
             <h2 className="text-3xl md:text-5xl font-extrabold text-white uppercase tracking-tight">
-              The Developer Journey
+              Your Journey With Us
             </h2>
-            <span className="font-mono text-xs text-outline opacity-60 hidden sm:block">[ PHASE_01_TO_DEPLOY ]</span>
+            <span className="font-mono text-xs text-outline opacity-60 hidden sm:block">Start to finish</span>
           </div>
 
           <div className="relative py-12">
@@ -114,13 +114,13 @@ export default function PublicTraining({ onShowNotification, onInitialize, mouse
               <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center relative">
                 <div className="col-span-12 md:col-span-5 md:text-right space-y-4">
                   <span className="font-mono text-xs text-secondary-fixed uppercase tracking-wider block font-bold">
-                    01_INGESTION
+                    Step 1
                   </span>
                   <h3 className="text-2xl md:text-3xl font-extrabold text-white uppercase">
-                    Hands-on bootcamps
+                    Hands-on Learning
                   </h3>
                   <p className="text-on-surface-variant text-sm md:text-base leading-relaxed max-w-lg md:ml-auto">
-                    Mastering internal microservices tooling, memory-safe languages (TypeScript/Rust), and proprietary architectural standards. No shortcuts, just pure structural engineering.
+                    You'll learn the basics of building software by actually doing it — guided every step of the way, with no prior experience needed.
                   </p>
                 </div>
                 
@@ -134,8 +134,8 @@ export default function PublicTraining({ onShowNotification, onInitialize, mouse
                 {/* Grid spec sheets */}
                 <div className="col-span-12 md:col-span-5 p-6 bg-surface-container-low border border-outline-variant">
                   <div className="font-mono text-[10px] text-outline mb-4 flex justify-between items-center bg-surface-container-lowest p-2">
-                    <span>CURRICULUM_BLOCK_FOUNDATION</span>
-                    <span className="opacity-50">v4.0.2</span>
+                    <span>What you'll learn</span>
+                    <span className="opacity-50">Basics</span>
                   </div>
                   <ul className="font-mono text-xs space-y-2 text-on-tertiary-container pl-2 border-l border-outline-variant">
                     {foundationCurriculum.map((item) => (
@@ -151,8 +151,8 @@ export default function PublicTraining({ onShowNotification, onInitialize, mouse
               <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center relative">
                 <div className="col-span-12 md:col-span-5 order-last md:order-first p-6 bg-surface-container-low border border-outline-variant">
                   <div className="font-mono text-[10px] text-outline mb-4 flex justify-between items-center bg-surface-container-lowest p-2">
-                    <span>CURRICULUM_BLOCK_PRESSURE</span>
-                    <span className="opacity-50">v4.0.2</span>
+                    <span>What you'll learn</span>
+                    <span className="opacity-50">Projects</span>
                   </div>
                   <ul className="font-mono text-xs space-y-2 text-on-tertiary-container pl-2 border-l border-outline-variant">
                     {pressureCurriculum.map((item) => (
@@ -172,13 +172,13 @@ export default function PublicTraining({ onShowNotification, onInitialize, mouse
 
                 <div className="col-span-12 md:col-span-5 space-y-4">
                   <span className="font-mono text-xs text-secondary-fixed uppercase tracking-wider block font-bold">
-                    02_EXECUTION
+                    Step 2
                   </span>
                   <h3 className="text-2xl md:text-3xl font-extrabold text-white uppercase">
-                    Real-world project experience
+                    Real Project Experience
                   </h3>
                   <p className="text-on-surface-variant text-sm md:text-base leading-relaxed max-w-lg">
-                    Building under fire. Candidate developers will manage simulated high-traffic servers and load scenarios where every millisecond of latency represents compliance degradation.
+                    You'll work on real projects, just like in a real job — building things people actually use and learning how to solve everyday challenges.
                   </p>
                 </div>
               </div>
@@ -187,13 +187,13 @@ export default function PublicTraining({ onShowNotification, onInitialize, mouse
               <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center relative">
                 <div className="col-span-12 md:col-span-5 md:text-right space-y-4">
                   <span className="font-mono text-xs text-secondary-fixed uppercase tracking-wider block font-bold">
-                    03_INTEGRATION
+                    Step 3
                   </span>
                   <h3 className="text-2xl md:text-3xl font-extrabold text-white uppercase">
-                    Mentorship from senior engineers
+                    Mentorship & a Career
                   </h3>
                   <p className="text-on-surface-variant text-sm md:text-base leading-relaxed max-w-lg md:ml-auto">
-                    Graduates don't just "apply" to Lanari Tech; they are integrated directly into our infrastructure. The final assessments feature compiling a live production feature release.
+                    Experienced developers guide you the whole way, and our top graduates are invited to join the Lanari Tech team or get help finding a job elsewhere.
                   </p>
                 </div>
 
@@ -206,8 +206,8 @@ export default function PublicTraining({ onShowNotification, onInitialize, mouse
 
                 <div className="col-span-12 md:col-span-5 p-6 bg-surface-container-low border border-outline-variant">
                   <div className="font-mono text-[10px] text-outline mb-4 flex justify-between items-center bg-surface-container-lowest p-2">
-                    <span>RESULT_PATH_CAREER</span>
-                    <span className="opacity-50">ACTIVE_RECRUITMENT</span>
+                    <span>Where it can lead</span>
+                    <span className="opacity-50">Now hiring</span>
                   </div>
                   <ul className="font-mono text-xs space-y-2 text-on-tertiary-container pl-2 border-l border-outline-variant">
                     {outcomeCurriculum.map((item) => (
@@ -238,13 +238,13 @@ export default function PublicTraining({ onShowNotification, onInitialize, mouse
               
               <div className="relative z-10 pt-20 space-y-4">
                 <span className="font-mono text-xs text-secondary-fixed uppercase tracking-widest block font-bold">
-                  GEOGRAPHIC_HUB
+                  Where we are
                 </span>
                 <h3 className="text-2xl md:text-4xl font-extrabold text-white uppercase leading-tight max-w-sm">
-                  Kigali HQ Integration
+                  Learn in Kigali
                 </h3>
                 <p className="text-on-surface-variant text-sm md:text-base max-w-md font-sans">
-                  Train in the heart of the Special Economic Zone (SEZ), directly alongside our senior lead developers in a high-focus studio layout.
+                  Train at our Kigali studio, working side by side with our experienced developers in a friendly, focused space.
                 </p>
               </div>
             </div>
@@ -276,19 +276,19 @@ export default function PublicTraining({ onShowNotification, onInitialize, mouse
                 <div>
                   <GraduationCap className="text-secondary-fixed mb-4 stroke-1" size={32} />
                   <h4 className="text-lg md:text-xl font-bold text-white mb-2 uppercase">
-                    Career preparation
+                    Job-ready skills
                   </h4>
                   <p className="text-on-surface-variant text-xs md:text-sm leading-relaxed font-sans">
-                    We provide comprehensive career placement preparation with local technology consortia and software partner ecosystems. Every assessment ensures readiness from deployment day one.
+                    We help you get ready for work and connect you with local tech companies and partners, so you're prepared from your very first day on the job.
                   </p>
                 </div>
                 
                 <div className="pt-6 mt-6 border-t border-outline-variant/30">
                   <button 
-                    onClick={() => onShowNotification("Fetching career placement logs registry... [OK]")}
+                    onClick={() => onShowNotification("We'll share more about job placement and benefits soon!")}
                     className="font-mono text-xs text-secondary-fixed flex items-center gap-2 group hover:gap-4 transition-all uppercase tracking-widest bg-transparent cursor-pointer font-bold border-none"
                   >
-                    EXPLORE_BENEFITS <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                    See the Benefits <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
                   </button>
                 </div>
               </div>
@@ -301,10 +301,10 @@ export default function PublicTraining({ onShowNotification, onInitialize, mouse
         <Reveal as="section" id="apply-cohort" className="bg-[#101415] border border-outline-variant py-12 px-6 md:px-16 flex flex-col lg:flex-row items-center justify-between gap-12 architectural-border">
           <div className="max-w-2xl text-center lg:text-left space-y-4">
             <h2 className="text-3xl md:text-4xl font-extrabold text-white uppercase leading-tight">
-              Start Your Engineering Lifecycle.
+              Start Your Tech Career.
             </h2>
             <p className="text-on-surface-variant font-sans text-sm md:text-base">
-              Applications for the Autumn Cohort IV close soon. Ensure your candidate profile is indexed and compiled before the evaluation deadline expires.
+              Spots for our next group fill up fast. Send in your application today and take the first step toward a career in software.
             </p>
           </div>
 
@@ -312,10 +312,10 @@ export default function PublicTraining({ onShowNotification, onInitialize, mouse
             {cohortSubmitted ? (
               <div className="bg-surface-container border border-secondary-fixed/50 p-6 text-center max-w-sm">
                 <p className="text-secondary-fixed font-mono text-xs uppercase font-bold animate-pulse">
-                  Candidate indexing complete [OK]
+                  Application received!
                 </p>
                 <p className="text-on-surface-variant text-xs font-sans mt-1">
-                  We have queued your registration.
+                  Thank you — we'll be in touch soon.
                 </p>
               </div>
             ) : (
@@ -325,14 +325,14 @@ export default function PublicTraining({ onShowNotification, onInitialize, mouse
                   required
                   value={cohortName}
                   onChange={(e) => setCohortName(e.target.value)}
-                  placeholder="CANDIDATE_NAME..."
+                  placeholder="Your full name..."
                   className="bg-surface-container-low border border-outline-variant text-white font-mono text-xs p-4 rounded-sm outline-none w-full sm:w-60 focus:border-secondary-fixed focus:ring-0"
                 />
-                <button 
+                <button
                   type="submit"
                   className="bg-secondary-fixed text-on-secondary px-8 py-4 font-mono text-xs font-bold uppercase tracking-widest cursor-pointer text-[#002110]"
                 >
-                  Initiate Application
+                  Apply Now
                 </button>
               </form>
             )}
@@ -343,7 +343,7 @@ export default function PublicTraining({ onShowNotification, onInitialize, mouse
                 <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-secondary-fixed"></span>
               </span>
               <span className="font-mono text-[10px] text-on-surface-variant uppercase tracking-widest">
-                System Status: Recruiting Open
+                Now accepting applications
               </span>
             </div>
           </div>

@@ -19,6 +19,14 @@ export default function App() {
   // Navigation State
   const [currentTab, setCurrentTab] = useState<PublicViewTab>("systems");
 
+  // Friendly labels for the nav tabs (keeps the internal tab keys intact)
+  const tabLabels: Record<PublicViewTab, string> = {
+    systems: "Home",
+    infrastructure: "Products",
+    protocol: "Services",
+    archive: "Training",
+  };
+
   // Gateways
   const [isInPortalGate, setIsInPortalGate] = useState<boolean>(false);
 
@@ -45,7 +53,7 @@ export default function App() {
   const handleLogout = () => {
     logout();
     setIsInPortalGate(false);
-    triggerNotification("Cryptographic uplink terminated. Returning operator to public stream.");
+    triggerNotification("You've been signed out. See you again soon!");
   };
 
   return (
@@ -60,7 +68,7 @@ export default function App() {
           <div className="flex gap-3">
             <AlertCircle className="text-[#16ff9e] shrink-0" size={16} />
             <div className="space-y-1">
-              <p className="text-white font-bold uppercase tracking-wider">SYSTEM_NOTIFICATION</p>
+              <p className="text-white font-bold uppercase tracking-wider">Notification</p>
               <p className="text-on-surface-variant leading-relaxed">{notification}</p>
             </div>
           </div>
@@ -116,7 +124,7 @@ export default function App() {
                         : "text-on-surface-variant hover:text-white"
                     }`}
                   >
-                    {tab}
+                    {tabLabels[tab]}
                   </button>
                 ))}
               </nav>
@@ -126,23 +134,23 @@ export default function App() {
             <div className="flex items-center gap-4">
               <div className="hidden sm:flex items-center gap-2 font-mono text-[9px] text-[#56ffa8]">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#16ff9e] animate-ping"></span>
-                <span className="font-bold">UPLINK_ACTIVE</span>
+                <span className="font-bold">ONLINE</span>
               </div>
 
               {isInPortalGate ? (
-                <button 
+                <button
                   onClick={() => setIsInPortalGate(false)}
                   className="border border-[#e0e3e5] px-5 py-2.5 font-mono text-xs uppercase tracking-widest text-white hover:bg-white hover:text-black transition-all cursor-pointer font-bold"
                 >
-                  Return
+                  Back
                 </button>
               ) : (
-                <button 
+                <button
                   onClick={() => setIsInPortalGate(true)}
                   className="bg-secondary-fixed text-on-secondary px-5 py-2.5 font-mono text-xs font-bold uppercase tracking-widest transition-all hover:scale-105 active:scale-95 text-[#002110] cursor-pointer inline-flex items-center gap-1 shadow-[0_0_15px_rgba(86,255,168,0.15)]"
                 >
                   <Shield size={12} />
-                  Initialize
+                  Log In
                 </button>
               )}
             </div>
@@ -197,34 +205,34 @@ export default function App() {
                   <span className="text-white font-extrabold font-sans uppercase tracking-widest text-[13px]">LANARI.TECH</span>
                 </div>
                 <div className="space-y-1 text-[11px] text-outline">
-                  <p>© 2016 LANARI TECH LTD // KIGALI, RWANDA</p>
-                  <p>EMAIL: [EMAIL_PLACEHOLDER] // PHONE: [PHONE_PLACEHOLDER]</p>
-                  <p>WEBSITE: [WEBSITE_PLACEHOLDER]</p>
+                  <p>© 2016 LANARI TECH LTD — KIGALI, RWANDA</p>
+                  <p>Email: hello@lanari.tech — Phone: +250 000 000 000</p>
+                  <p>Web: www.lanari.tech</p>
                 </div>
               </div>
 
               <div className="col-span-1 md:col-span-2 space-y-3">
-                <p className="text-[#16ff9e] font-sans font-bold text-[11px] uppercase tracking-wider">CONTROL</p>
+                <p className="text-[#16ff9e] font-sans font-bold text-[11px] uppercase tracking-wider">Company</p>
                 <div className="space-y-1.5 flex flex-col text-[11px] text-outline">
-                  <span className="hover:text-white transition-colors cursor-pointer">[ Operations ]</span>
-                  <span className="hover:text-white transition-colors cursor-pointer">[ Security ]</span>
-                  <span className="hover:text-white transition-colors cursor-pointer">[ Compliance ]</span>
+                  <span className="hover:text-white transition-colors cursor-pointer">About us</span>
+                  <span className="hover:text-white transition-colors cursor-pointer">Our work</span>
+                  <span className="hover:text-white transition-colors cursor-pointer">Careers</span>
                 </div>
               </div>
 
               <div className="col-span-1 md:col-span-2 space-y-3">
-                <p className="text-[#16ff9e] font-sans font-bold text-[11px] uppercase tracking-wider">SYSTEM</p>
+                <p className="text-[#16ff9e] font-sans font-bold text-[11px] uppercase tracking-wider">Support</p>
                 <div className="space-y-1.5 flex flex-col text-[11px] text-outline">
-                  <span className="hover:text-white transition-colors cursor-pointer">[ Terms ]</span>
-                  <span className="hover:text-white transition-colors cursor-pointer">[ Network_status ]</span>
-                  <span className="hover:text-white transition-colors cursor-pointer">[ Registry ]</span>
+                  <span className="hover:text-white transition-colors cursor-pointer">Contact us</span>
+                  <span className="hover:text-white transition-colors cursor-pointer">Help center</span>
+                  <span className="hover:text-white transition-colors cursor-pointer">Privacy &amp; terms</span>
                 </div>
               </div>
 
               <div className="md:col-span-3 space-y-3 text-left md:text-right flex flex-col md:items-end">
-                <p className="text-white font-bold font-sans text-[11px] uppercase tracking-wider">CLUSTER_ALPHA // #REGION_PRIMARY</p>
-                
-                {/* Node visualizer visual bar indicator matching footer */}
+                <p className="text-white font-bold font-sans text-[11px] uppercase tracking-wider">Based in Kigali, Rwanda</p>
+
+                {/* Decorative indicator bar */}
                 <div className="flex items-center gap-1.5 py-1">
                   <span className="w-4 h-1 bg-outline-variant/30 rounded-sm"></span>
                   <span className="w-4 h-1 bg-outline-variant/30 rounded-sm"></span>
@@ -232,8 +240,8 @@ export default function App() {
                   <span className="w-4 h-1 bg-outline-variant/30 rounded-sm"></span>
                   <span className="w-4 h-1 bg-outline-variant/30 rounded-sm"></span>
                 </div>
-                
-                <p className="text-[10px] text-outline mt-1 uppercase">LAT: -1.9441° S LON: 30.0619° E</p>
+
+                <p className="text-[10px] text-outline mt-1">Serving clients across Africa</p>
               </div>
 
             </div>
