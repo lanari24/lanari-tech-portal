@@ -109,13 +109,14 @@ export default function App() {
                   <button
                     key={tab}
                     onClick={() => setCurrentTab(tab)}
-                    className={`px-5 py-2 font-mono text-[11px] uppercase tracking-[0.2em] transition-all cursor-pointer ${
-                      currentTab === tab 
-                        ? "text-secondary-fixed font-bold border-b-2 border-secondary-fixed" 
+                    aria-current={currentTab === tab ? "page" : undefined}
+                    className={`nav-tab px-5 py-2 font-mono text-[11px] uppercase tracking-[0.2em] transition-all cursor-pointer ${
+                      currentTab === tab
+                        ? "nav-tab-active text-secondary-fixed font-bold border-b-2 border-secondary-fixed"
                         : "text-on-surface-variant hover:text-white"
                     }`}
                   >
-                    [ {tab} ]
+                    {tab}
                   </button>
                 ))}
               </nav>

@@ -247,6 +247,40 @@
     .text-gradient-accent { color: #16ff9e; }
 }
 
+/* =========================================================
+   PRIMARY NAV — clean labels, decorative brackets on hover/active
+   Brackets are CSS pseudo-elements (not text), so screen readers
+   announce only the label. Space is reserved to avoid layout shift.
+   ========================================================= */
+
+.nav-tab::before,
+.nav-tab::after {
+    display: inline-block;
+    color: #16ff9e;
+    opacity: 0;
+    transform: translateX(4px);
+    transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.nav-tab::before {
+    content: "[";
+    margin-right: 0.55em;
+    transform: translateX(-4px);
+}
+
+.nav-tab::after {
+    content: "]";
+    margin-left: 0.55em;
+}
+
+.nav-tab:hover::before,
+.nav-tab:hover::after,
+.nav-tab-active::before,
+.nav-tab-active::after {
+    opacity: 1;
+    transform: translateX(0);
+}
+
 /* Custom technical scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
