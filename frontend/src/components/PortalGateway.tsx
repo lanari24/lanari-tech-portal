@@ -18,11 +18,11 @@ export default function PortalGateway({ onShowNotification }: PortalGatewayProps
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!identifier) {
-      onShowNotification("Initialization requires a valid access identifier.");
+      onShowNotification("Please enter your email or ID.");
       return;
     }
     if (!passkey) {
-      onShowNotification("A structural passkey is required to bypass security perimeters.");
+      onShowNotification("Please enter your password.");
       return;
     }
 
@@ -30,11 +30,11 @@ export default function PortalGateway({ onShowNotification }: PortalGatewayProps
     try {
       // Identifier may be the access ref (CLI-…) or the account email.
       await login(identifier.trim(), passkey);
-      onShowNotification("Cryptographic handshake validated for node [OK]");
+      onShowNotification("Welcome back! You're now signed in.");
       // On success the auth state flips and App renders the dashboard.
     } catch (err) {
-      const msg = err instanceof ApiError ? err.message : "Authorization handshake failed.";
-      onShowNotification(`[DENIED] ${msg}`);
+      const msg = err instanceof ApiError ? err.message : "Sign-in failed. Please check your details.";
+      onShowNotification(msg);
     } finally {
       setLoading(false);
     }
@@ -43,20 +43,20 @@ export default function PortalGateway({ onShowNotification }: PortalGatewayProps
   const handleCreateAccount = async (role: "client" | "student") => {
     const email = identifier.trim();
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      onShowNotification("Provisioning requires a valid email in the Access Identifier field.");
+      onShowNotification("Please enter a valid email address to create an account.");
       return;
     }
     if (passkey.length < 8) {
-      onShowNotification("Provisioning requires a passkey of at least 8 characters.");
+      onShowNotification("Please choose a password with at least 8 characters.");
       return;
     }
     setLoading(true);
     try {
       await register({ email, password: passkey, role });
-      onShowNotification(`New ${role} profile provisioned — access identifier issued [OK]`);
+      onShowNotification(`Your ${role} account is ready — you can sign in now!`);
     } catch (err) {
-      const msg = err instanceof ApiError ? err.message : "Provisioning failed.";
-      onShowNotification(`[DENIED] ${msg}`);
+      const msg = err instanceof ApiError ? err.message : "We couldn't create your account. Please try again.";
+      onShowNotification(msg);
     } finally {
       setLoading(false);
     }
@@ -78,14 +78,14 @@ export default function PortalGateway({ onShowNotification }: PortalGatewayProps
 
         {/* Technical numbers positioning metadata in corners */}
         <div className="absolute top-24 left-12 font-mono text-xs text-on-surface-variant opacity-15 select-none space-y-1 hidden lg:block">
-          <div>COORD: 51.5074° N, 0.1278° W</div>
-          <div>VERSION: 2.0.4-ENGINEERING</div>
-          <div>STATUS: [ENCRYPTED_SIGNAL_LOCK]</div>
+          <div>Kigali, Rwanda</div>
+          <div>Secure sign-in</div>
+          <div>Your data is protected</div>
         </div>
         <div className="absolute bottom-24 right-12 font-mono text-xs text-on-surface-variant opacity-15 select-none text-right space-y-1 hidden lg:block">
-          <div>AUTH_PROTOCOL: SHA-512_EXTENDED</div>
-          <div>SERVER_CLUSTER: EMEA-NORTH-04</div>
-          <div>LATENCY: 14MS</div>
+          <div>Encrypted connection</div>
+          <div>Trusted &amp; private</div>
+          <div>Always online</div>
         </div>
       </div>
 
@@ -107,25 +107,25 @@ export default function PortalGateway({ onShowNotification }: PortalGatewayProps
             <div className="flex items-center gap-2">
               <span className="w-2.5 h-2.5 bg-secondary-fixed-dim rounded-full animate-pulse"></span>
               <p className="font-mono text-xs text-secondary-fixed-dim uppercase font-bold tracking-wider">
-                System Status: Active
+                We're online
               </p>
             </div>
-            
+
             <h2 className="font-sans text-3xl md:text-4xl lg:text-5xl font-extrabold leading-tight text-white uppercase">
-              Structural Precision <br />
-              <span className="text-secondary-fixed">Engineering Portal</span>
+              Welcome to <br />
+              <span className="text-secondary-fixed">Your Portal</span>
             </h2>
 
             <p className="font-sans text-on-surface-variant text-sm md:text-base leading-relaxed max-w-md">
-              Access the Lanari Engineering Ecosystem. Secure entry for structural simulations, cloud project workspace management, and advanced technical training progress tracking.
+              Sign in to manage your projects, find your files, and track your training progress — all in one place.
             </p>
 
             <div className="pt-4 flex flex-wrap gap-4 select-none">
               <div className="px-4 py-2 border border-outline-variant bg-surface-container-low font-mono text-xs text-on-surface-variant">
-                NODE_ID: 771-PX-0
+                For clients
               </div>
               <div className="px-4 py-2 border border-outline-variant bg-surface-container-low font-mono text-xs text-on-surface-variant">
-                KERNEL_VER: 8.4.1
+                For students
               </div>
             </div>
           </div>
@@ -136,7 +136,7 @@ export default function PortalGateway({ onShowNotification }: PortalGatewayProps
           <div className="w-full max-w-[485px] bg-[#1d2022] border border-outline-variant p-4 md:p-8 relative transition-all duration-300 hover:border-secondary-fixed">
             
             <div className="absolute -top-[13px] -right-[5px] font-mono text-[9px] bg-background px-2 py-1 text-secondary-fixed border border-outline-variant font-bold select-none z-20">
-              DOC_REF: AUTH_4492
+              Secure sign-in
             </div>
 
             {/* Toggle Tabs */}
@@ -151,7 +151,7 @@ export default function PortalGateway({ onShowNotification }: PortalGatewayProps
                 }`}
               >
                 <span>CLIENT LOGIN</span>
-                <span className="block text-[9px] opacity-40 mt-1 font-normal uppercase">PROJECT PORTAL</span>
+                <span className="block text-[9px] opacity-40 mt-1 font-normal uppercase">Your projects</span>
               </button>
 
               <button 
@@ -164,7 +164,7 @@ export default function PortalGateway({ onShowNotification }: PortalGatewayProps
                 }`}
               >
                 <span>STUDENT LOGIN</span>
-                <span className="block text-[9px] opacity-40 mt-1 font-normal uppercase">TRAINING PROTOCOL</span>
+                <span className="block text-[9px] opacity-40 mt-1 font-normal uppercase">Your training</span>
               </button>
             </div>
 
@@ -173,28 +173,28 @@ export default function PortalGateway({ onShowNotification }: PortalGatewayProps
               
               <div className="space-y-2">
                 <label className="font-mono text-xs text-on-surface-variant uppercase flex justify-between font-bold">
-                  <span>Access Identifier</span>
+                  <span>Email or ID</span>
                   <span className="text-[10px] opacity-45">REQUIRED</span>
                 </label>
                 <div className="relative">
-                  <input 
+                  <input
                     type="text"
                     required
                     value={identifier}
                     onChange={(e) => setIdentifier(e.target.value)}
-                    placeholder={tab === "client" ? "CLI-402-..." : "STU-882-..."}
+                    placeholder={tab === "client" ? "you@example.com or your ID" : "you@example.com or your ID"}
                     className="w-full bg-[#191c1e] border border-outline-variant py-4 px-4 font-mono text-xs text-white outline-none focus:border-secondary-fixed transition-all"
                   />
                 </div>
                 <p className="font-mono text-[9px] text-outline opacity-60">
-                  Login with your access ref (CLI-…/STU-…) or email. New here? Enter an email + passkey, then CREATE / ENROLL below.
+                  Sign in with your email or the ID we gave you. New here? Enter your email and a password, then tap Create account below.
                 </p>
               </div>
 
               <div className="space-y-2">
                 <label className="font-mono text-xs text-on-surface-variant uppercase flex justify-between font-bold">
-                  <span>Secure Passkey</span>
-                  <span className="text-[10px] opacity-45 font-bold">ENCRYPTED</span>
+                  <span>Password</span>
+                  <span className="text-[10px] opacity-45 font-bold">PRIVATE</span>
                 </label>
                 <div className="relative">
                   <input 
@@ -216,15 +216,15 @@ export default function PortalGateway({ onShowNotification }: PortalGatewayProps
                     onChange={(e) => setRemainSession(e.target.checked)}
                     className="bg-[#191c1e] border-outline-variant text-secondary-fixed focus:ring-0 w-3.5 h-3.5"
                   />
-                  <span className="font-mono text-on-surface-variant font-bold">REMAIN_SESSION</span>
+                  <span className="font-mono text-on-surface-variant font-bold">Keep me signed in</span>
                 </label>
-                
-                <button 
+
+                <button
                   type="button"
-                  onClick={() => onShowNotification("Credential parameters recovery initialized... check operator terminal details.")}
+                  onClick={() => onShowNotification("No problem — we'll help you reset your password. Check your email.")}
                   className="font-mono text-xs font-bold text-outline hover:text-secondary-fixed bg-transparent cursor-pointer border-none"
                 >
-                  RECOVER_CREDENTIALS
+                  Forgot password?
                 </button>
               </div>
 
@@ -232,29 +232,29 @@ export default function PortalGateway({ onShowNotification }: PortalGatewayProps
                 type="submit"
                 className="w-full bg-secondary-fixed text-on-secondary font-mono py-5 flex items-center justify-center gap-2 hover:brightness-110 active:scale-[0.99] transition-all group cursor-pointer text-[#002110] font-bold"
               >
-                <span>INITIALIZE CONNECTION</span>
+                <span>SIGN IN</span>
                 <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
               </button>
 
               <div className="pt-6 border-t border-outline-variant flex flex-col gap-4">
                 <p className="font-mono text-[10px] text-center text-outline-variant uppercase tracking-widest font-bold">
-                  NEW_ENTITY_REGISTRATION
+                  New here? Create an account
                 </p>
-                
+
                 <div className="grid grid-cols-2 gap-4">
-                  <button 
+                  <button
                     type="button"
                     onClick={() => handleCreateAccount("client")}
                     className="border border-outline-variant py-3 font-mono text-xs text-white hover:bg-[#272a2c] hover:border-white transition-colors cursor-pointer bg-transparent"
                   >
-                    CREATE_CLIENT
+                    Sign up as Client
                   </button>
-                  <button 
+                  <button
                     type="button"
                     onClick={() => handleCreateAccount("student")}
                     className="border border-outline-variant py-3 font-mono text-xs text-white hover:bg-[#272a2c] hover:border-white transition-colors cursor-pointer bg-transparent"
                   >
-                    ENROLL_STUDENT
+                    Sign up as Student
                   </button>
                 </div>
               </div>
@@ -268,7 +268,7 @@ export default function PortalGateway({ onShowNotification }: PortalGatewayProps
                   <div className="absolute inset-y-0 left-0 bg-secondary-fixed animate-[loading_1.5s_infinite]" style={{ width: "60%" }}></div>
                 </div>
                 <p className="mt-4 font-mono text-xs text-secondary-fixed-dim animate-pulse font-bold uppercase tracking-widest">
-                  AUTHORIZING_REQUEST_HANDSHAKE...
+                  Signing you in...
                 </p>
               </div>
             )}
