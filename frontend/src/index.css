@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=JetBrains+Mono:wght@400;500;700&family=Geist:wght@400;500;700;800&display=swap');
+/* Fonts (Geist + JetBrains Mono) are loaded via <link> in index.html
+   with preconnect — faster than an @import here. */
 
 @theme {
   --color-surface: #101415;
@@ -50,8 +51,8 @@
   --color-secondary-container: #16ff9e;
   --color-on-secondary-fixed: #002110;
 
-  --font-sans: "Inter", "Geist", system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", monospace;
+  --font-sans: "Geist", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "Cascadia Code", monospace;
 }
 
 @layer base {
@@ -72,7 +73,6 @@
   /* Tighter, more deliberate display typography */
   h1, h2, h3 {
     text-wrap: balance;
-    font-feature-settings: "ss01", "cv01";
   }
 
   p {
