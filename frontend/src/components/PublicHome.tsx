@@ -20,9 +20,9 @@ export default function PublicHome({ onInitialize, mouseCoords }: PublicHomeProp
 
   return (
     <div className="relative">
-      {/* Background Interactive Overlays */}
-      <div className="absolute inset-0 grid-overlay z-0 pointer-events-none"></div>
-      <div 
+      {/* Background Interactive Overlays — matched to the other public pages */}
+      <div className="absolute inset-0 blueprint-grid opacity-10 z-0 pointer-events-none"></div>
+      <div
         className="absolute w-[500px] h-[500px] growth-glow z-0 rounded-full transition-transform duration-300 ease-out pointer-events-none"
         style={{
           transform: `translate(${mouseCoords.x * 25}px, ${mouseCoords.y * 25}px)`,
@@ -30,17 +30,6 @@ export default function PublicHome({ onInitialize, mouseCoords }: PublicHomeProp
           top: "10%"
         }}
       ></div>
-
-      {/* Subtle Grid Lines for CAD aesthetic */}
-      <div className="absolute inset-0 z-0 opacity-15 pointer-events-none">
-        <div className="absolute top-0 left-[20%] bottom-0 w-px bg-outline-variant"></div>
-        <div className="absolute top-0 left-[40%] bottom-0 w-px bg-outline-variant"></div>
-        <div className="absolute top-0 left-[60%] bottom-0 w-px bg-outline-variant"></div>
-        <div className="absolute top-0 left-[80%] bottom-0 w-px bg-outline-variant"></div>
-        <div className="absolute top-[25%] left-0 right-0 h-px bg-outline-variant"></div>
-        <div className="absolute top-[50%] left-0 right-0 h-px bg-outline-variant"></div>
-        <div className="absolute top-[75%] left-0 right-0 h-px bg-outline-variant"></div>
-      </div>
 
       <div className="relative z-10 px-6 md:px-16 pt-12 pb-32 max-w-7xl mx-auto space-y-40">
         
