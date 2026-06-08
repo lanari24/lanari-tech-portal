@@ -17,3 +17,6 @@ coverage/
 
 # Prisma local
 *.db
+
+ssh.md
+deploycredentials.md

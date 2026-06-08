@@ -1,19 +1,21 @@
 import React, { useState } from "react";
 import { Terminal, ArrowRight, ShieldCheck, HelpCircle, Lock, UserCheck } from "lucide-react";
+import { useAuth } from "../context/AuthContext";
+import { ApiError } from "../lib/api";
 
 interface PortalGatewayProps {
-  onLoginSuccess: (role: "client" | "student", userRef: string) => void;
   onShowNotification: (msg: string) => void;
 }
 
-export default function PortalGateway({ onLoginSuccess, onShowNotification }: PortalGatewayProps) {
+export default function PortalGateway({ onShowNotification }: PortalGatewayProps) {
+  const { login, register } = useAuth();
   const [tab, setTab] = useState<"client" | "student">("client");
   const [identifier, setIdentifier] = useState<string>("");
   const [passkey, setPasskey] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [remainSession, setRemainSession] = useState<boolean>(true);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!identifier) {
       onShowNotification("Initialization requires a valid access identifier.");
@@ -25,19 +27,39 @@ export default function PortalGateway({ onLoginSuccess, onShowNotification }: Po
     }
 
     setLoading(true);
-
-    // Simulate cryptographic authorization verification
-    setTimeout(() => {
+    try {
+      // Identifier may be the access ref (CLI-…) or the account email.
+      await login(identifier.trim(), passkey);
+      onShowNotification("Cryptographic handshake validated for node [OK]");
+      // On success the auth state flips and App renders the dashboard.
+    } catch (err) {
+      const msg = err instanceof ApiError ? err.message : "Authorization handshake failed.";
+      onShowNotification(`[DENIED] ${msg}`);
+    } finally {
       setLoading(false);
-      onLoginSuccess(tab, identifier);
-      onShowNotification(`Cryptographic handshake validated for node [OK]`);
-    }, 1800);
+    }
   };
 
-  const handleCreateAccount = (role: string) => {
-    onShowNotification(`Provisioning new ${role} profile block... Please enter mock parameters.`);
-    setIdentifier(role === "client" ? "CLI-402-990" : "STU-882-014");
-    setPasskey("SHA-SECURE-KEY-REVISED");
+  const handleCreateAccount = async (role: "client" | "student") => {
+    const email = identifier.trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      onShowNotification("Provisioning requires a valid email in the Access Identifier field.");
+      return;
+    }
+    if (passkey.length < 8) {
+      onShowNotification("Provisioning requires a passkey of at least 8 characters.");
+      return;
+    }
+    setLoading(true);
+    try {
+      await register({ email, password: passkey, role });
+      onShowNotification(`New ${role} profile provisioned — access identifier issued [OK]`);
+    } catch (err) {
+      const msg = err instanceof ApiError ? err.message : "Provisioning failed.";
+      onShowNotification(`[DENIED] ${msg}`);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -165,7 +187,7 @@ export default function PortalGateway({ onLoginSuccess, onShowNotification }: Po
                   />
                 </div>
                 <p className="font-mono text-[9px] text-outline opacity-60">
-                  Tip: Tip/click "Create Account / Invite" triggers below to autofill mock entries.
+                  Login with your access ref (CLI-…/STU-…) or email. New here? Enter an email + passkey, then CREATE / ENROLL below.
                 </p>
               </div>
 

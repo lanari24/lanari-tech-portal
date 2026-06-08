@@ -6,17 +6,21 @@ import PublicServices from "./components/PublicServices";
 import PublicTraining from "./components/PublicTraining";
 import PortalGateway from "./components/PortalGateway";
 import PortalDashboard from "./components/PortalDashboard";
+import { useAuth } from "./context/AuthContext";
 import { Terminal, Shield, AlertCircle, X, HelpCircle } from "lucide-react";
 
 export default function App() {
+  // Authentication (real, backed by the API)
+  const { user, logout } = useAuth();
+  const isAuthenticated = !!user;
+  const userRole: "client" | "student" = user?.role === "STUDENT" ? "student" : "client";
+  const userRef = user?.ref ?? "";
+
   // Navigation State
   const [currentTab, setCurrentTab] = useState<PublicViewTab>("systems");
-  
+
   // Gateways
   const [isInPortalGate, setIsInPortalGate] = useState<boolean>(false);
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const [userRole, setUserRole] = useState<"client" | "student">("client");
-  const [userRef, setUserRef] = useState<string>("");
 
   // Interactive Coordinates
   const [mouseCoords, setMouseCoords] = useState<{ x: number; y: number }>({ x: 0.5, y: 0.5 });
@@ -38,17 +42,9 @@ export default function App() {
     }, 4500);
   };
 
-  const handleLoginSuccess = (role: "client" | "student", identifier: string) => {
-    setUserRole(role);
-    setUserRef(identifier);
-    setIsAuthenticated(true);
-    setIsInPortalGate(false);
-  };
-
   const handleLogout = () => {
-    setIsAuthenticated(false);
+    logout();
     setIsInPortalGate(false);
-    setUserRef("");
     triggerNotification("Cryptographic uplink terminated. Returning operator to public stream.");
   };
 
@@ -154,8 +150,7 @@ export default function App() {
           {/* DYNAMIC CONTENT REGION */}
           <main className="flex-grow">
             {isInPortalGate ? (
-              <PortalGateway 
-                onLoginSuccess={handleLoginSuccess}
+              <PortalGateway
                 onShowNotification={triggerNotification}
               />
             ) : (

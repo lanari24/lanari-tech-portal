@@ -1,13 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { 
-  PortalSidebarTab, 
-  SystemResource, 
-  ResourceDocument, 
-  MentorshipSyncEvent, 
-  ProjectEntry, 
-  TerminalLogLine 
-} from "../types";
-import { 
+import { PortalSidebarTab } from "../types";
+import {
+  projectsApi,
+  resourcesApi,
+  eventsApi,
+  documentsApi,
+  settingsApi,
+  openTelemetryStream,
+  type ProjectDTO,
+  type ResourceDTO,
+  type EventDTO,
+  type DocumentDTO,
+  type SettingsDTO,
+} from "../lib/endpoints";
+import { ApiError } from "../lib/api";
+import {
   Activity, 
   Database, 
   LayoutDashboard, 
@@ -39,111 +46,12 @@ export default function PortalDashboard({ role, userRef, onLogout, onShowNotific
   const [systemTime, setSystemTime] = useState<string>("06:24:35");
   const [searchQuery, setSearchQuery] = useState<string>("");
 
-  // Resource Documents State
-  const [documents, setDocuments] = useState<ResourceDocument[]>([
-    {
-      id: "doc-1",
-      title: "System Scalability Protocols",
-      fileRef: "CORE_INFRA_V4.PDF",
-      imageAlt: "Infrastructure Documentation Layout",
-      imageUrl: "https://lh3.googleusercontent.com/aida-public/AB6AXuADrtC091vVu4aDnZxGJU5dj4XL9Z86r-c3ZPKJZqpF-xqn6HjDN4OJ_IzLD-sd5q8CUxRSalqKRQL3GsuLd3Zx2zDc0lSLqKQE_3_xZOHfjTgESa6T_Gvpn-8Ri_CmzDUtYJyp7OXRrb1ogWrZ0InwFxEGxDt7lJWr1L-4YXLQuJriReOj_-YPUoVbjBikATUlxNspy-nn7g0rU0GjmKL4MUKs7yR7fvVpBY4CjrkoyL75o2G8d4wFAIvb3ZV8n9kpJsBKXP9fwrg",
-      category: "infrastructure"
-    },
-    {
-      id: "doc-2",
-      title: "Encryption Layer Standards",
-      fileRef: "AUTH_MOD_22.DOC",
-      imageAlt: "Circuit Documentation Board",
-      imageUrl: "https://lh3.googleusercontent.com/aida-public/AB6AXuCN8a04qvoEXWiGuGIt6mCHtSJKpFDbY3X-HmdzDE2Jf7ay3AauWie8GbS6bdnv_sTDpZ9eS2ePxi4zGepsEbTpDIUuOrAo0gBLPiEdNaaIin66eLjvqrtrDV_NHZlJpurcN-gQPW3J4GuaM8TEwiwUVBhxj-i09dUoYi3Hr0EyOSx0M9ZKv5YbXKgogqz5-jg9sSE6maED-IqGMosoddPiKPaWxiwgbhtxBqbvtGchNggBs8vEyJ59AOsBXe0Vk117aGpg4Z7H9M8",
-      category: "cryptography"
-    },
-    {
-      id: "doc-3",
-      title: "Global Topology Mapping",
-      fileRef: "NET_MAP_GBL.SVG",
-      imageAlt: "Digital Topology Sphere",
-      imageUrl: "https://lh3.googleusercontent.com/aida-public/AB6AXuCOt_4WHlXBVXWBG7stYnZR0HwruLAs1K1I2XubZ2SsGbXZyE3P5WvW0jOl0TQsLYhPhg4VL26IoAQoOIKVOr2vlhTUcd653w56OQbIBc-jlFy_7CL56Pd_Vwnn2EX5i5Vr7lHWbYL6jhA4dI4TVhtDcwe2ew8hOv1tA38FXsXyQxvt-nTxBNkY23eeKrpsARoD8gn_HX9so6zBvZKmSZFEGEHPeyNe6UzT0ZOkuT5uwfx4Jfz0IoA4LBlO9_IFYgAe9c-lU1pCPoM",
-      category: "topology"
-    }
-  ]);
-
-  // Mentorship Synchronizations
-  const [syncEvents, setSyncEvents] = useState<MentorshipSyncEvent[]>([
-    {
-      id: "ev-1",
-      timeLabel: "14:00 - TODAY",
-      timeSub: "14:00",
-      title: "Code Review: Edge Runtime",
-      instructor: "Dr. Aris Thorne"
-    },
-    {
-      id: "ev-2",
-      timeLabel: "10:00 - TOMORROW",
-      timeSub: "10:00",
-      title: "Architecture Deep Dive",
-      instructor: "Senior Specialist"
-    },
-    {
-      id: "ev-3",
-      timeLabel: "16:30 - WEDNESDAY",
-      timeSub: "16:30",
-      title: "Security Audit Briefing",
-      instructor: "Compliance Team"
-    }
-  ]);
-
-  // Cluster Allocation resources table
-  const [resources, setResources] = useState<SystemResource[]>([
-    {
-      id: "RES_LN_7782",
-      name: "Global Central Neural Hub",
-      allocationNode: "NODE-7",
-      priority: "CRITICAL",
-      status: "Active",
-      activity: "12.2ms"
-    },
-    {
-      id: "RES_LN_0911",
-      name: "Satellite Uplink Station 4",
-      allocationNode: "UPLINK-SEC-4",
-      priority: "STANDARD",
-      status: "Active",
-      activity: "44.8ms"
-    },
-    {
-      id: "RES_LN_2210",
-      name: "Research & Dev Cloud Cluster",
-      allocationNode: "DEV-CLUSTER-9",
-      priority: "HIGH",
-      status: "Sync_Wait",
-      activity: "--"
-    },
-    {
-      id: "RES_LN_5541",
-      name: "Logistics Automation Grid",
-      allocationNode: "GRID-WEST-A",
-      priority: "STANDARD",
-      status: "Active",
-      activity: "18.1ms"
-    }
-  ]);
-
-  // Projects Master Database
-  const [projects, setProjects] = useState<ProjectEntry[]>([
-    { id: "p-1", name: "LanariFlow ERP Integration", codeName: "LNT-FLOW", client: "Rwanda Logistics S.A.", leadEngineer: "Alex Mugisha", progress: 78, status: "active" },
-    { id: "p-2", name: "Ubumwe Connect API Mesh", codeName: "UBUMWE-M", client: "Pan-African Trade union", leadEngineer: "Diane Umutoni", progress: 95, status: "active" },
-    { id: "p-3", name: "SecureGrid Decoupled Vault", codeName: "SECURE-V", client: "Kigali National Bank", leadEngineer: "Dr. Aris Thorne", progress: 15, status: "pipeline" },
-    { id: "p-4", name: "DataCore African Ledger", codeName: "CORE-LEDG", client: "Sovereignty Group", leadEngineer: "Robert Kamanzi", progress: 100, status: "completed" }
-  ]);
-
-  // Terminal telemetry log list
-  const [telemetryLogs, setTelemetryLogs] = useState<string[]>([
-    "[OK] DB_INITIALIZED :: NODE_WEST_ALPHA",
-    "[OK] AUTH_PROXY_HANDSHAKE :: USER_ADMIN_01",
-    "[WARN] LATENCY_SPIKE :: RES_LN_2210 (144ms)",
-    "[OK] ASSET_DEPLOYMENT_COMPLETE :: BUILD_v.3.2",
-    "[OK] COMPUTE_ALLOCATION_OPTIMIZED :: HUB_04"
-  ]);
+  // Live workspace data (loaded from the API)
+  const [documents, setDocuments] = useState<DocumentDTO[]>([]);
+  const [syncEvents, setSyncEvents] = useState<EventDTO[]>([]);
+  const [resources, setResources] = useState<ResourceDTO[]>([]);
+  const [projects, setProjects] = useState<ProjectDTO[]>([]);
+  const [telemetryLogs, setTelemetryLogs] = useState<string[]>([]);
 
   // Forms State
   const [newProjectName, setNewProjectName] = useState<string>("");
@@ -151,10 +59,43 @@ export default function PortalDashboard({ role, userRef, onLogout, onShowNotific
   const [newProjectLead, setNewProjectLead] = useState<string>("Alex Mugisha");
 
   const [newDocTitle, setNewDocTitle] = useState<string>("");
+  const [newDocFile, setNewDocFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState<boolean>(false);
 
   const [settingsLoad, setSettingsLoad] = useState<number>(24.8);
   const [settingsHealth, setSettingsHealth] = useState<boolean>(true);
+
+  // Initial data load from the API.
+  useEffect(() => {
+    let active = true;
+    (async () => {
+      try {
+        const [proj, res, evs, docs, settings] = await Promise.all([
+          projectsApi.list(),
+          resourcesApi.list(),
+          eventsApi.list(),
+          documentsApi.list(),
+          settingsApi.get(),
+        ]);
+        if (!active) return;
+        setProjects(proj);
+        setResources(res);
+        setSyncEvents(evs);
+        setDocuments(docs);
+        setSettingsLoad(settings.loadCapacity);
+        setSettingsHealth(settings.uplinkActive);
+      } catch (err) {
+        if (active) {
+          onShowNotification(
+            `[WARN] Failed to load workspace data: ${err instanceof ApiError ? err.message : "network error"}`,
+          );
+        }
+      }
+    })();
+    return () => {
+      active = false;
+    };
+  }, [onShowNotification]);
 
   // Custom CLI command state
   const [terminalInput, setTerminalInput] = useState<string>("");
@@ -171,126 +112,115 @@ export default function PortalDashboard({ role, userRef, onLogout, onShowNotific
     return () => clearInterval(timer);
   }, []);
 
-  // Periodic random console log tick
+  // Live telemetry stream (SSE from the API over Redis pub/sub).
   useEffect(() => {
-    const randomLogs = [
-      "PACKET_TRANSFER_SUCCESS :: NODE_7_ACTIVE",
-      "MEMORY_PURGE_EXECUTED :: REGISTRY_SYNC [OK]",
-      "ENCRYPTION_ROTATION_COMPLETED :: AES-256",
-      "SYNC_TARGET_REACHED :: CLUSTER_INTEGRITY_INDEX_100",
-      "THERMAL_CONTROL_STABLE :: FAN_RPM_3400",
-      "MONITORING :: HEALTH_STATUS_NOMINAL"
-    ];
-    
-    const logger = setInterval(() => {
-      const indicator = Math.random() > 0.15 ? "[OK]" : "[WARN]";
-      const parsedLogLabel = `${indicator} ${randomLogs[Math.floor(Math.random() * randomLogs.length)]}`;
+    const es = openTelemetryStream((evt) => {
+      const line = `[${evt.level}] ${evt.text}`;
       setTelemetryLogs((prev) => {
         const sliced = prev.length > 7 ? prev.slice(1) : prev;
-        return [...sliced, parsedLogLabel];
+        return [...sliced, line];
       });
-    }, 5500);
-
-    return () => clearInterval(logger);
+    });
+    return () => es?.close();
   }, []);
 
+  const reportError = (err: unknown, fallback: string) =>
+    onShowNotification(`[DENIED] ${err instanceof ApiError ? err.message : fallback}`);
+
   // Create Project Callback
-  const handleCreateProject = (e: React.FormEvent) => {
+  const handleCreateProject = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newProjectName || !newProjectClient) {
       onShowNotification("Initialization parameters incomplete.");
       return;
     }
-    const codes = ["ALPHA", "DELTA", "ZETA", "SIGMA", "KIGALI", "RW"];
-    const randomizedCode = `${codes[Math.floor(Math.random() * codes.length)]}-${Math.floor(Math.random() * 900 + 100)}`;
-    const newPrj: ProjectEntry = {
-      id: `p-${Date.now()}`,
-      name: newProjectName,
-      codeName: randomizedCode,
-      client: newProjectClient,
-      leadEngineer: newProjectLead,
-      progress: 0,
-      status: "pipeline"
-    };
-    setProjects((prev) => [newPrj, ...prev]);
-    setNewProjectName("");
-    setNewProjectClient("");
-    onShowNotification(`Project code block [${randomizedCode}] compiled into register [OK]`);
+    try {
+      const project = await projectsApi.create({
+        name: newProjectName,
+        client: newProjectClient,
+        leadEngineer: newProjectLead,
+      });
+      setProjects((prev) => [project, ...prev]);
+      setNewProjectName("");
+      setNewProjectClient("");
+      onShowNotification(`Project code block [${project.codeName}] compiled into register [OK]`);
+    } catch (err) {
+      reportError(err, "Project compilation failed.");
+    }
   };
 
-  // Upload/Add Resource Document
-  const handleAddDocument = (e: React.FormEvent) => {
+  // Upload/Add Resource Document (optional real file -> MinIO)
+  const handleAddDocument = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newDocTitle) {
       onShowNotification("Document reference title invalid.");
       return;
     }
     setIsUploading(true);
-    setTimeout(() => {
-      const fileRefs = ["SYS_NET_COMP.PDF", "CR_CRYPT_V2.DOC", "TOPOL_GEO_R.SVG", "KRN_LOCK_CONF.PDF"];
-      const randomizedFile = fileRefs[Math.floor(Math.random() * fileRefs.length)];
-      const docImages = [
-        "https://lh3.googleusercontent.com/aida-public/AB6AXuADrtC091vVu4aDnZxGJU5dj4XL9Z86r-c3ZPKJZqpF-xqn6HjDN4OJ_IzLD-sd5q8CUxRSalqKRQL3GsuLd3Zx2zDc0lSLqKQE_3_xZOHfjTgESa6T_Gvpn-8Ri_CmzDUtYJyp7OXRrb1ogWrZ0InwFxEGxDt7lJWr1L-4YXLQuJriReOj_-YPUoVbjBikATUlxNspy-nn7g0rU0GjmKL4MUKs7yR7fvVpBY4CjrkoyL75o2G8d4wFAIvb3ZV8n9kpJsBKXP9fwrg",
-        "https://lh3.googleusercontent.com/aida-public/AB6AXuCN8a04qvoEXWiGuGIt6mCHtSJKpFDbY3X-HmdzDE2Jf7ay3AauWie8GbS6bdnv_sTDpZ9eS2ePxi4zGepsEbTpDIUuOrAo0gBLPiEdNaaIin66eLjvqrtrDV_NHZlJpurcN-gQPW3J4GuaM8TEwiwUVBhxj-i09dUoYi3Hr0EyOSx0M9ZKv5YbXKgogqz5-jg9sSE6maED-IqGMosoddPiKPaWxiwgbhtxBqbvtGchNggBs8vEyJ59AOsBXe0Vk117aGpg4Z7H9M8",
-        "https://lh3.googleusercontent.com/aida-public/AB6AXuCOt_4WHlXBVXWBG7stYnZR0HwruLAs1K1I2XubZ2SsGbXZyE3P5WvW0jOl0TQsLYhPhg4VL26IoAQoOIKVOr2vlhTUcd653w56OQbIBc-jlFy_7CL56Pd_Vwnn2EX5i5Vr7lHWbYL6jhA4dI4TVhtDcwe2ew8hOv1tA38FXsXyQxvt-nTxBNkY23eeKrpsARoD8gn_HX9so6zBvZKmSZFEGEHPeyNe6UzT0ZOkuT5uwfx4Jfz0IoA4LBlO9_IFYgAe9c-lU1pCPoM"
-      ];
-      const randomizedImg = docImages[Math.floor(Math.random() * docImages.length)];
-      const newD: ResourceDocument = {
-        id: `doc-${Date.now()}`,
-        title: newDocTitle,
-        fileRef: randomizedFile,
-        imageAlt: "Uploaded User Asset",
-        imageUrl: randomizedImg,
-        category: "infrastructure"
-      };
-      setDocuments((prev) => [...prev, newD]);
+    try {
+      const doc = await documentsApi.create(newDocTitle, newDocFile ?? undefined);
+      setDocuments((prev) => [...prev, doc]);
       setNewDocTitle("");
+      setNewDocFile(null);
+      onShowNotification(`Resource ${doc.fileRef} structural upload verified [OK]`);
+    } catch (err) {
+      reportError(err, "Upload failed.");
+    } finally {
       setIsUploading(false);
-      onShowNotification(`Resource ${randomizedFile} structural upload verified [OK]`);
-    }, 1200);
+    }
   };
 
-  // Sync assessed callback
-  const handleRequestSync = () => {
-    const syncSubjects = [
-      "Database Optimization Sync",
-      "Network Load Telemetry review",
-      "Ubumwe API Compliance review",
-      "Kigali SEZ Node diagnostics check"
-    ];
-    const newS: MentorshipSyncEvent = {
-      id: `ev-${Date.now()}`,
-      timeLabel: "15:30 - THURSDAY",
-      timeSub: "15:30",
-      title: syncSubjects[Math.floor(Math.random() * syncSubjects.length)],
-      instructor: "Assigned Lead Engineer"
-    };
-    setSyncEvents((prev) => [...prev, newS]);
-    onShowNotification("Mentorship parameter synchronized, queued in Node-07 registry.");
+  // Delete a document (removes the MinIO object too)
+  const handleDeleteDocument = async (id: string) => {
+    try {
+      await documentsApi.remove(id);
+      setDocuments((prev) => prev.filter((d) => d.id !== id));
+      onShowNotification("Resource document purged from repository.");
+    } catch (err) {
+      reportError(err, "Delete failed.");
+    }
+  };
+
+  // Download a document's attached file (authenticated blob fetch)
+  const handleDownloadDocument = async (id: string, fileRef: string) => {
+    try {
+      await documentsApi.download(id, fileRef);
+    } catch (err) {
+      reportError(err, "Download failed.");
+    }
+  };
+
+  // Sync request callback
+  const handleRequestSync = async () => {
+    try {
+      const event = await eventsApi.create();
+      setSyncEvents((prev) => [...prev, event]);
+      onShowNotification("Mentorship parameter synchronized, queued in Node-07 registry.");
+    } catch (err) {
+      reportError(err, "Sync request failed.");
+    }
   };
 
   // Delete SystemResource
-  const handleDeleteResource = (id: string, name: string) => {
-    setResources((prev) => prev.filter((r) => r.id !== id));
-    onShowNotification(`Resource Node Reference ${id} disconnected from network.`);
+  const handleDeleteResource = async (id: string) => {
+    try {
+      await resourcesApi.remove(id);
+      setResources((prev) => prev.filter((r) => r.id !== id));
+      onShowNotification(`Resource Node Reference disconnected from network.`);
+    } catch (err) {
+      reportError(err, "Disconnect failed.");
+    }
   };
 
-  // Change resource allocation status
-  const handleToggleResourceStatus = (id: string) => {
-    setResources((prev) => 
-      prev.map((r) => {
-        if (r.id === id) {
-          const nextStatusValue = r.status === "Active" ? "Sync_Wait" : r.status === "Sync_Wait" ? "Terminated" : "Active";
-          onShowNotification(`Resource ${id} status toggled: ${nextStatusValue}`);
-          return {
-            ...r,
-            status: nextStatusValue,
-            activity: nextStatusValue === "Active" ? "12.2ms" : nextStatusValue === "Sync_Wait" ? "99ms" : "--"
-          };
-        }
-        return r;
-      })
-    );
+  // Change resource allocation status (server cycles Active -> Sync_Wait -> Terminated)
+  const handleToggleResourceStatus = async (id: string) => {
+    try {
+      const updated = await resourcesApi.toggle(id);
+      setResources((prev) => prev.map((r) => (r.id === id ? updated : r)));
+      onShowNotification(`Resource ${updated.resourceCode} status toggled: ${updated.status}`);
+    } catch (err) {
+      reportError(err, "Status toggle failed.");
+    }
   };
 
   // Command Input Submit
@@ -300,11 +230,8 @@ export default function PortalDashboard({ role, userRef, onLogout, onShowNotific
     const commandText = terminalInput.trim().toUpperCase();
     let logOutput = "";
     if (commandText === "RESTAGE" || commandText === "RESET") {
-      logOutput = `[OK] RESET_PROTOCOL_SUCCESS :: SYSTEM CLEAR`;
-      setResources([
-        { id: "RES_LN_7782", name: "Global Central Neural Hub", allocationNode: "NODE-7", priority: "CRITICAL", status: "Active", activity: "12.2ms" },
-        { id: "RES_LN_0911", name: "Satellite Uplink Station 4", allocationNode: "UPLINK-SEC-4", priority: "STANDARD", status: "Active", activity: "44.8ms" }
-      ]);
+      logOutput = `[OK] RESYNC_PROTOCOL :: REFRESHING REGISTRY FROM NODE`;
+      resourcesApi.list().then(setResources).catch(() => undefined);
     } else if (commandText.startsWith("PING")) {
       logOutput = `[OK] TELEMETRY PING :: NODE RESPONSE IN LATENCY ${latencyFluct()}`;
     } else if (commandText.startsWith("HELP")) {
@@ -640,9 +567,9 @@ export default function PortalDashboard({ role, userRef, onLogout, onShowNotific
                     Resource Repository
                   </h3>
                   
-                  {/* Form to mock upload document reference */}
-                  <form onSubmit={handleAddDocument} className="flex gap-2 flex-wrap">
-                    <input 
+                  {/* Upload a document (optional real file -> MinIO) */}
+                  <form onSubmit={handleAddDocument} className="flex gap-2 flex-wrap items-center">
+                    <input
                       type="text"
                       required
                       value={newDocTitle}
@@ -650,8 +577,16 @@ export default function PortalDashboard({ role, userRef, onLogout, onShowNotific
                       placeholder="NEW_RESOURCE_TITLE..."
                       className="bg-surface-container-lowest border border-outline-variant text-white font-mono text-xs p-2 focus:border-secondary-fixed focus:ring-0 max-w-xs"
                     />
-                    <button 
-                      type="submit" 
+                    <label className="border border-outline-variant text-on-surface-variant hover:text-white hover:border-white px-3 py-2 font-mono text-[10px] uppercase tracking-wider cursor-pointer max-w-max truncate">
+                      {newDocFile ? newDocFile.name.slice(0, 16) : "ATTACH_FILE"}
+                      <input
+                        type="file"
+                        className="hidden"
+                        onChange={(e) => setNewDocFile(e.target.files?.[0] ?? null)}
+                      />
+                    </label>
+                    <button
+                      type="submit"
                       disabled={isUploading}
                       className="bg-secondary-fixed hover:brightness-110 text-[#002110] px-4 py-2 font-mono text-xs uppercase tracking-wider font-bold flex items-center gap-1.5 cursor-pointer max-w-max"
                     >
@@ -663,22 +598,49 @@ export default function PortalDashboard({ role, userRef, onLogout, onShowNotific
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                   {filteredDocuments.map((doc) => (
-                    <div key={doc.id} className="group cursor-pointer">
+                    <div key={doc.id} className="group">
                       <div className="aspect-video mb-4 overflow-hidden border border-outline-variant relative bg-surface-container-high/40">
-                        <img 
-                          alt={doc.imageAlt} 
-                          className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500 scale-105 group-hover:scale-100" 
-                          src={doc.imageUrl}
-                          referrerPolicy="no-referrer"
-                        />
+                        {doc.imageUrl ? (
+                          <img
+                            alt={doc.imageAlt ?? doc.title}
+                            className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500 scale-105 group-hover:scale-100"
+                            src={doc.imageUrl}
+                            referrerPolicy="no-referrer"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex flex-col items-center justify-center gap-2 text-outline">
+                            <Database size={22} />
+                            <span className="font-mono text-[9px] uppercase tracking-widest">{doc.category}</span>
+                          </div>
+                        )}
                         <div className="absolute inset-0 bg-secondary-fixed/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                       </div>
                       <p className="font-mono text-[9px] text-secondary-fixed font-bold mb-1">
                         {doc.fileRef}
                       </p>
-                      <h4 className="font-sans text-xs font-bold text-white uppercase truncate">
-                        {doc.title}
-                      </h4>
+                      <div className="flex items-center justify-between gap-2">
+                        <h4 className="font-sans text-xs font-bold text-white uppercase truncate">
+                          {doc.title}
+                        </h4>
+                        <div className="flex items-center gap-2 shrink-0">
+                          {doc.hasFile && (
+                            <button
+                              onClick={() => handleDownloadDocument(doc.id, doc.fileRef)}
+                              className="text-outline hover:text-secondary-fixed cursor-pointer"
+                              title="Download asset"
+                            >
+                              <UploadCloud size={13} className="rotate-180" />
+                            </button>
+                          )}
+                          <button
+                            onClick={() => handleDeleteDocument(doc.id)}
+                            className="text-outline hover:text-error cursor-pointer"
+                            title="Delete document"
+                          >
+                            <Trash2 size={13} />
+                          </button>
+                        </div>
+                      </div>
                     </div>
                   ))}
 
@@ -1002,7 +964,7 @@ export default function PortalDashboard({ role, userRef, onLogout, onShowNotific
                     <tbody className="text-xs">
                       {resources.map((res) => (
                         <tr key={res.id} className="border-b border-outline-variant hover:bg-[#272a2c] transition-colors">
-                          <td className="p-4 font-bold text-white font-mono">{res.id}</td>
+                          <td className="p-4 font-bold text-white font-mono">{res.resourceCode}</td>
                           <td className="p-4 font-sans">{res.name} <span className="opacity-40 text-[10px] font-mono block">[{res.allocationNode}]</span></td>
                           <td className="p-4">
                             <span className={`px-2 py-0.5 border text-[9px] font-bold ${
@@ -1034,7 +996,7 @@ export default function PortalDashboard({ role, userRef, onLogout, onShowNotific
                           <td className="p-4 text-right font-mono text-outline">{res.activity}</td>
                           <td className="p-4 text-center">
                             <button 
-                              onClick={() => handleDeleteResource(res.id, res.name)}
+                              onClick={() => handleDeleteResource(res.id)}
                               className="text-outline hover:text-error hover:scale-105 transition-all p-1.5 cursor-pointer bg-transparent"
                               title="Disconnect Resource Node"
                             >
@@ -1135,9 +1097,11 @@ export default function PortalDashboard({ role, userRef, onLogout, onShowNotific
                       max="100"
                       step="1"
                       value={settingsLoad}
-                      onChange={(e) => {
-                        setSettingsLoad(Number(e.target.value));
-                        onShowNotification(`System target load simulated index adjusted to ${e.target.value}%`);
+                      onChange={(e) => setSettingsLoad(Number(e.target.value))}
+                      onMouseUp={(e) => {
+                        const v = Number((e.target as HTMLInputElement).value);
+                        settingsApi.update({ loadCapacity: v }).catch(() => undefined);
+                        onShowNotification(`System target load index persisted at ${v}%`);
                       }}
                       className="flex-grow accent-[#16ff9e] bg-primary-container h-1"
                     />
@@ -1161,8 +1125,10 @@ export default function PortalDashboard({ role, userRef, onLogout, onShowNotific
                         type="checkbox"
                         checked={settingsHealth}
                         onChange={(e) => {
-                          setSettingsHealth(e.target.checked);
-                          onShowNotification(`Uplink nodes active reporting: ${e.target.checked ? "NOMINAL" : "DISSOLVED"}`);
+                          const checked = e.target.checked;
+                          setSettingsHealth(checked);
+                          settingsApi.update({ uplinkActive: checked }).catch(() => undefined);
+                          onShowNotification(`Uplink nodes active reporting: ${checked ? "NOMINAL" : "DISSOLVED"}`);
                         }}
                         className="bg-[#191c1e] border-outline-variant text-[#16ff9e] focus:ring-0"
                       />
