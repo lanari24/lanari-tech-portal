@@ -7,6 +7,7 @@ export interface AuthUser {
   id: string;
   email: string;
   name: string | null;
+  phone: string | null;
   role: Role;
   ref: string;
   createdAt: string;
@@ -64,7 +65,7 @@ export interface SettingsDTO {
 
 // ---- Auth ----
 export const authApi = {
-  register: (input: { email: string; password: string; name?: string; role: "client" | "student" }) =>
+  register: (input: { email: string; password: string; name: string; phone: string; role: "client" | "student" }) =>
     apiRequest<AuthResult>("/auth/register", { method: "POST", body: input, auth: false }),
   login: (input: { identifier: string; password: string }) =>
     apiRequest<AuthResult>("/auth/login", { method: "POST", body: input, auth: false }),

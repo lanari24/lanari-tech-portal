@@ -41,6 +41,7 @@ function publicUser(user: User) {
     id: user.id,
     email: user.email,
     name: user.name,
+    phone: user.phone,
     role: user.role,
     ref: user.ref,
     createdAt: user.createdAt,
@@ -66,14 +67,17 @@ async function issueTokens(user: User): Promise<AuthTokens> {
 }
 
 export async function register(input: RegisterInput) {
-  const existing = await prisma.user.findUnique({ where: { email: input.email } });
+  // Normalise email so it matches the lowercased lookup used at login.
+  const email = input.email.trim().toLowerCase();
+  const existing = await prisma.user.findUnique({ where: { email } });
   if (existing) throw HttpError.conflict('An account with this email already exists');
 
   const role = roleFromInput(input.role);
   const user = await prisma.user.create({
     data: {
-      email: input.email,
-      name: input.name ?? null,
+      email,
+      name: input.name,
+      phone: input.phone.trim(),
       role,
       ref: await generateRef(role),
       passwordHash: await hashPassword(input.password),

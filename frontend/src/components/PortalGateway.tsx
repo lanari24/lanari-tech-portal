@@ -12,8 +12,14 @@ export default function PortalGateway({ onShowNotification }: PortalGatewayProps
   const [tab, setTab] = useState<"client" | "student">("client");
   const [identifier, setIdentifier] = useState<string>("");
   const [passkey, setPasskey] = useState<string>("");
+  const [fullName, setFullName] = useState<string>("");
+  const [phone, setPhone] = useState<string>("");
+  const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [loading, setLoading] = useState<boolean>(false);
   const [remainSession, setRemainSession] = useState<boolean>(true);
+
+  // Matches the backend phone rule: digits with optional +, spaces, -, ().
+  const isValidPhone = (value: string) => /^\+?[0-9][0-9\s\-()]{6,19}$/.test(value.trim());
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -40,10 +46,19 @@ export default function PortalGateway({ onShowNotification }: PortalGatewayProps
     }
   };
 
-  const handleCreateAccount = async (role: "client" | "student") => {
+  const handleCreateAccount = async (e: React.FormEvent) => {
+    e.preventDefault();
     const email = identifier.trim();
+    if (!fullName.trim()) {
+      onShowNotification("Please enter your name.");
+      return;
+    }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      onShowNotification("Please enter a valid email address to create an account.");
+      onShowNotification("Please enter a valid email address.");
+      return;
+    }
+    if (!isValidPhone(phone)) {
+      onShowNotification("Please enter a valid phone number.");
       return;
     }
     if (passkey.length < 8) {
@@ -52,8 +67,8 @@ export default function PortalGateway({ onShowNotification }: PortalGatewayProps
     }
     setLoading(true);
     try {
-      await register({ email, password: passkey, role });
-      onShowNotification(`Your ${role} account is ready — you can sign in now!`);
+      await register({ email, password: passkey, name: fullName.trim(), phone: phone.trim(), role: tab });
+      onShowNotification(`Welcome, ${fullName.trim()}! Your account is ready.`);
     } catch (err) {
       const msg = err instanceof ApiError ? err.message : "We couldn't create your account. Please try again.";
       onShowNotification(msg);
@@ -136,44 +151,61 @@ export default function PortalGateway({ onShowNotification }: PortalGatewayProps
           <div className="w-full max-w-[485px] bg-[#1d2022] border border-outline-variant p-4 md:p-8 relative transition-all duration-300 hover:border-secondary-fixed">
             
             <div className="absolute -top-[13px] -right-[5px] font-mono text-[9px] bg-background px-2 py-1 text-secondary-fixed border border-outline-variant font-bold select-none z-20">
-              Secure sign-in
+              {mode === "signin" ? "Secure sign-in" : "New account"}
             </div>
 
-            {/* Toggle Tabs */}
+            {/* Account type tabs (client vs student) */}
             <div className="grid grid-cols-2 gap-px bg-outline-variant mb-6 select-none">
-              <button 
+              <button
                 type="button"
-                onClick={() => { setTab("client"); setIdentifier(""); }}
+                onClick={() => { setTab("client"); }}
                 className={`py-4 font-mono text-xs transition-all cursor-pointer ${
-                  tab === "client" 
-                    ? "bg-[#0a0e1a] text-secondary-fixed border-b border-secondary-fixed font-bold shadow-[0_0_15px_rgba(86,255,168,0.05)]" 
+                  tab === "client"
+                    ? "bg-[#0a0e1a] text-secondary-fixed border-b border-secondary-fixed font-bold shadow-[0_0_15px_rgba(86,255,168,0.05)]"
                     : "bg-[#191c1e] text-on-surface-variant hover:text-white"
                 }`}
               >
-                <span>CLIENT LOGIN</span>
+                <span>CLIENT</span>
                 <span className="block text-[9px] opacity-40 mt-1 font-normal uppercase">Your projects</span>
               </button>
 
-              <button 
+              <button
                 type="button"
-                onClick={() => { setTab("student"); setIdentifier(""); }}
+                onClick={() => { setTab("student"); }}
                 className={`py-4 font-mono text-xs transition-all cursor-pointer ${
-                  tab === "student" 
-                    ? "bg-[#0a0e1a] text-secondary-fixed border-b border-secondary-fixed font-bold shadow-[0_0_15px_rgba(86,255,168,0.05)]" 
+                  tab === "student"
+                    ? "bg-[#0a0e1a] text-secondary-fixed border-b border-secondary-fixed font-bold shadow-[0_0_15px_rgba(86,255,168,0.05)]"
                     : "bg-[#191c1e] text-on-surface-variant hover:text-white"
                 }`}
               >
-                <span>STUDENT LOGIN</span>
+                <span>STUDENT</span>
                 <span className="block text-[9px] opacity-40 mt-1 font-normal uppercase">Your training</span>
               </button>
             </div>
 
-            {/* Login form layout */}
-            <form onSubmit={handleSubmit} className="space-y-6">
-              
+            {/* Sign-in / Sign-up form */}
+            <form onSubmit={mode === "signin" ? handleSubmit : handleCreateAccount} className="space-y-6">
+
+              {mode === "signup" && (
+                <div className="space-y-2">
+                  <label className="font-mono text-xs text-on-surface-variant uppercase flex justify-between font-bold">
+                    <span>Full name</span>
+                    <span className="text-[10px] opacity-45">REQUIRED</span>
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={fullName}
+                    onChange={(e) => setFullName(e.target.value)}
+                    placeholder="e.g. Alex Mugisha"
+                    className="w-full bg-[#191c1e] border border-outline-variant py-4 px-4 font-mono text-xs text-white outline-none focus:border-secondary-fixed transition-all"
+                  />
+                </div>
+              )}
+
               <div className="space-y-2">
                 <label className="font-mono text-xs text-on-surface-variant uppercase flex justify-between font-bold">
-                  <span>Email or ID</span>
+                  <span>{mode === "signin" ? "Email or ID" : "Email"}</span>
                   <span className="text-[10px] opacity-45">REQUIRED</span>
                 </label>
                 <div className="relative">
@@ -182,22 +214,41 @@ export default function PortalGateway({ onShowNotification }: PortalGatewayProps
                     required
                     value={identifier}
                     onChange={(e) => setIdentifier(e.target.value)}
-                    placeholder={tab === "client" ? "you@example.com or your ID" : "you@example.com or your ID"}
+                    placeholder={mode === "signin" ? "you@example.com or your ID" : "you@example.com"}
                     className="w-full bg-[#191c1e] border border-outline-variant py-4 px-4 font-mono text-xs text-white outline-none focus:border-secondary-fixed transition-all"
                   />
                 </div>
-                <p className="font-mono text-[9px] text-outline opacity-60">
-                  Sign in with your email or the ID we gave you. New here? Enter your email and a password, then tap Create account below.
-                </p>
+                {mode === "signin" && (
+                  <p className="font-mono text-[9px] text-outline opacity-60">
+                    Sign in with your email or the ID we gave you.
+                  </p>
+                )}
               </div>
+
+              {mode === "signup" && (
+                <div className="space-y-2">
+                  <label className="font-mono text-xs text-on-surface-variant uppercase flex justify-between font-bold">
+                    <span>Phone number</span>
+                    <span className="text-[10px] opacity-45">REQUIRED</span>
+                  </label>
+                  <input
+                    type="tel"
+                    required
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    placeholder="e.g. +250 788 123 456"
+                    className="w-full bg-[#191c1e] border border-outline-variant py-4 px-4 font-mono text-xs text-white outline-none focus:border-secondary-fixed transition-all"
+                  />
+                </div>
+              )}
 
               <div className="space-y-2">
                 <label className="font-mono text-xs text-on-surface-variant uppercase flex justify-between font-bold">
                   <span>Password</span>
-                  <span className="text-[10px] opacity-45 font-bold">PRIVATE</span>
+                  <span className="text-[10px] opacity-45 font-bold">{mode === "signin" ? "PRIVATE" : "MIN 8 CHARS"}</span>
                 </label>
                 <div className="relative">
-                  <input 
+                  <input
                     type="password"
                     required
                     value={passkey}
@@ -208,55 +259,61 @@ export default function PortalGateway({ onShowNotification }: PortalGatewayProps
                 </div>
               </div>
 
-              <div className="flex items-center justify-between py-2 text-xs">
-                <label className="flex items-center gap-2 cursor-pointer select-none">
-                  <input 
-                    type="checkbox"
-                    checked={remainSession}
-                    onChange={(e) => setRemainSession(e.target.checked)}
-                    className="bg-[#191c1e] border-outline-variant text-secondary-fixed focus:ring-0 w-3.5 h-3.5"
-                  />
-                  <span className="font-mono text-on-surface-variant font-bold">Keep me signed in</span>
-                </label>
+              {mode === "signin" && (
+                <div className="flex items-center justify-between py-2 text-xs">
+                  <label className="flex items-center gap-2 cursor-pointer select-none">
+                    <input
+                      type="checkbox"
+                      checked={remainSession}
+                      onChange={(e) => setRemainSession(e.target.checked)}
+                      className="bg-[#191c1e] border-outline-variant text-secondary-fixed focus:ring-0 w-3.5 h-3.5"
+                    />
+                    <span className="font-mono text-on-surface-variant font-bold">Keep me signed in</span>
+                  </label>
 
-                <button
-                  type="button"
-                  onClick={() => onShowNotification("No problem — we'll help you reset your password. Check your email.")}
-                  className="font-mono text-xs font-bold text-outline hover:text-secondary-fixed bg-transparent cursor-pointer border-none"
-                >
-                  Forgot password?
-                </button>
-              </div>
+                  <button
+                    type="button"
+                    onClick={() => onShowNotification("No problem — we'll help you reset your password. Check your email.")}
+                    className="font-mono text-xs font-bold text-outline hover:text-secondary-fixed bg-transparent cursor-pointer border-none"
+                  >
+                    Forgot password?
+                  </button>
+                </div>
+              )}
 
-              <button 
+              <button
                 type="submit"
-                className="w-full bg-secondary-fixed text-on-secondary font-mono py-5 flex items-center justify-center gap-2 hover:brightness-110 active:scale-[0.99] transition-all group cursor-pointer text-[#002110] font-bold"
+                disabled={loading}
+                className="w-full bg-secondary-fixed text-on-secondary font-mono py-5 flex items-center justify-center gap-2 hover:brightness-110 active:scale-[0.99] transition-all group cursor-pointer text-[#002110] font-bold disabled:opacity-60"
               >
-                <span>SIGN IN</span>
+                <span>{mode === "signin" ? "SIGN IN" : `CREATE ${tab.toUpperCase()} ACCOUNT`}</span>
                 <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
               </button>
 
-              <div className="pt-6 border-t border-outline-variant flex flex-col gap-4">
-                <p className="font-mono text-[10px] text-center text-outline-variant uppercase tracking-widest font-bold">
-                  New here? Create an account
-                </p>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <button
-                    type="button"
-                    onClick={() => handleCreateAccount("client")}
-                    className="border border-outline-variant py-3 font-mono text-xs text-white hover:bg-[#272a2c] hover:border-white transition-colors cursor-pointer bg-transparent"
-                  >
-                    Sign up as Client
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => handleCreateAccount("student")}
-                    className="border border-outline-variant py-3 font-mono text-xs text-white hover:bg-[#272a2c] hover:border-white transition-colors cursor-pointer bg-transparent"
-                  >
-                    Sign up as Student
-                  </button>
-                </div>
+              <div className="pt-6 border-t border-outline-variant text-center">
+                {mode === "signin" ? (
+                  <p className="font-mono text-[11px] text-outline-variant">
+                    New here?{" "}
+                    <button
+                      type="button"
+                      onClick={() => setMode("signup")}
+                      className="font-bold text-secondary-fixed hover:underline bg-transparent cursor-pointer border-none"
+                    >
+                      Create an account
+                    </button>
+                  </p>
+                ) : (
+                  <p className="font-mono text-[11px] text-outline-variant">
+                    Already have an account?{" "}
+                    <button
+                      type="button"
+                      onClick={() => setMode("signin")}
+                      className="font-bold text-secondary-fixed hover:underline bg-transparent cursor-pointer border-none"
+                    >
+                      Sign in
+                    </button>
+                  </p>
+                )}
               </div>
 
             </form>

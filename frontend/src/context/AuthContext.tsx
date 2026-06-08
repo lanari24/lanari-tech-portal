@@ -5,7 +5,8 @@ import { tokenStore } from "../lib/api";
 interface RegisterInput {
   email: string;
   password: string;
-  name?: string;
+  name: string;
+  phone: string;
   role: "client" | "student";
 }
 

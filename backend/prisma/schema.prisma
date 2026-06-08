@@ -48,6 +48,7 @@ model User {
   email        String   @unique
   ref          String   @unique // human-facing access identifier e.g. CLI-402-990
   name         String?
+  phone        String? // contact phone captured at registration
   role         Role     @default(CLIENT)
   passwordHash String
   createdAt    DateTime @default(now())
