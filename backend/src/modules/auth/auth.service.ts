@@ -31,6 +31,13 @@ function roleFromInput(role: RegisterInput['role']): Role {
   return role === 'student' ? Role.STUDENT : Role.CLIENT;
 }
 
+/** Normalises a phone number for storage and lookup: keeps a leading + and digits. */
+function normalizePhone(value: string): string {
+  const trimmed = value.trim();
+  const plus = trimmed.startsWith('+') ? '+' : '';
+  return plus + trimmed.replace(/\D/g, '');
+}
+
 export interface AuthTokens {
   accessToken: string;
   refreshToken: string;
@@ -77,7 +84,7 @@ export async function register(input: RegisterInput) {
     data: {
       email,
       name: input.name,
-      phone: input.phone.trim(),
+      phone: normalizePhone(input.phone),
       role,
       ref: await generateRef(role),
       passwordHash: await hashPassword(input.password),
@@ -91,12 +98,20 @@ export async function register(input: RegisterInput) {
 
 export async function login(input: LoginInput) {
   const id = input.identifier.trim();
+  // Match by access ref, email (case-insensitive), or phone (normalised).
+  const phone = normalizePhone(id);
   const user = await prisma.user.findFirst({
-    where: { OR: [{ ref: id }, { email: id.toLowerCase() }] },
+    where: {
+      OR: [
+        { ref: id },
+        { email: id.toLowerCase() },
+        ...(phone.replace('+', '').length >= 7 ? [{ phone }] : []),
+      ],
+    },
   });
   // Constant-ish failure path — same error whether user missing or bad password.
   if (!user || !(await verifyPassword(input.password, user.passwordHash))) {
-    throw HttpError.unauthorized('Invalid access identifier or passkey');
+    throw HttpError.unauthorized('Wrong email, phone, ID, or password');
   }
 
   const tokens = await issueTokens(user);

@@ -205,7 +205,7 @@ export default function PortalGateway({ onShowNotification }: PortalGatewayProps
 
               <div className="space-y-2">
                 <label className="font-mono text-xs text-on-surface-variant uppercase flex justify-between font-bold">
-                  <span>{mode === "signin" ? "Email or ID" : "Email"}</span>
+                  <span>{mode === "signin" ? "Email, phone, or ID" : "Email"}</span>
                   <span className="text-[10px] opacity-45">REQUIRED</span>
                 </label>
                 <div className="relative">
@@ -214,13 +214,13 @@ export default function PortalGateway({ onShowNotification }: PortalGatewayProps
                     required
                     value={identifier}
                     onChange={(e) => setIdentifier(e.target.value)}
-                    placeholder={mode === "signin" ? "you@example.com or your ID" : "you@example.com"}
+                    placeholder={mode === "signin" ? "Email, phone, or your ID" : "you@example.com"}
                     className="w-full bg-[#191c1e] border border-outline-variant py-4 px-4 font-mono text-xs text-white outline-none focus:border-secondary-fixed transition-all"
                   />
                 </div>
                 {mode === "signin" && (
                   <p className="font-mono text-[9px] text-outline opacity-60">
-                    Sign in with your email or the ID we gave you.
+                    Sign in with your email, phone number, or the ID we gave you.
                   </p>
                 )}
               </div>

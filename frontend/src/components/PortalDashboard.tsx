@@ -37,11 +37,13 @@ import {
 interface PortalDashboardProps {
   role: "client" | "student";
   userRef: string;
+  userName?: string;
+  userPhone?: string;
   onLogout: () => void;
   onShowNotification: (msg: string) => void;
 }
 
-export default function PortalDashboard({ role, userRef, onLogout, onShowNotification }: PortalDashboardProps) {
+export default function PortalDashboard({ role, userRef, userName, userPhone, onLogout, onShowNotification }: PortalDashboardProps) {
   const [activeTab, setActiveTab] = useState<PortalSidebarTab>("overview");
   const [systemTime, setSystemTime] = useState<string>("06:24:35");
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -335,9 +337,15 @@ export default function PortalDashboard({ role, userRef, onLogout, onShowNotific
         <div className="p-4 border-t border-outline-variant space-y-4">
           <div className="p-3 bg-[#101415] border border-outline-variant rounded-sm text-center">
             <p className="font-mono text-[9px] text-outline uppercase font-bold text-left mb-1">Signed in as:</p>
+            {userName && (
+              <p className="font-sans text-xs text-white text-left font-bold truncate">{userName}</p>
+            )}
             <p className="font-mono text-xs text-secondary-fixed text-left font-bold truncate">
               {role.toUpperCase()} // {userRef}
             </p>
+            {userPhone && (
+              <p className="font-mono text-[10px] text-outline text-left truncate mt-0.5">{userPhone}</p>
+            )}
           </div>
 
           <button
@@ -382,8 +390,8 @@ export default function PortalDashboard({ role, userRef, onLogout, onShowNotific
 
             <div className="flex items-center gap-3 border-l border-outline-variant pl-6 select-none">
               <div className="text-right hidden sm:block">
-                <p className="font-mono text-xs text-white font-bold">{userRef}</p>
-                <p className="font-mono text-[9px] text-outline capitalize text-right">{role} account</p>
+                <p className="font-mono text-xs text-white font-bold truncate max-w-[160px]">{userName || userRef}</p>
+                <p className="font-mono text-[9px] text-outline capitalize text-right">{role} account{userPhone ? ` · ${userPhone}` : ""}</p>
               </div>
               <div className="w-10 h-10 border border-outline-variant rounded-full overflow-hidden grayscale bg-surface-container-high relative">
                 {/* Embedded admin avatar asset */}

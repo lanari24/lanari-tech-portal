@@ -15,6 +15,8 @@ export default function App() {
   const isAuthenticated = !!user;
   const userRole: "client" | "student" = user?.role === "STUDENT" ? "student" : "client";
   const userRef = user?.ref ?? "";
+  const userName = user?.name ?? "";
+  const userPhone = user?.phone ?? "";
 
   // Navigation State
   const [currentTab, setCurrentTab] = useState<PublicViewTab>("systems");
@@ -83,9 +85,11 @@ export default function App() {
 
       {/* RENDER LOGGED IN PORTAL WORKSPACE */}
       {isAuthenticated ? (
-        <PortalDashboard 
-          role={userRole} 
-          userRef={userRef} 
+        <PortalDashboard
+          role={userRole}
+          userRef={userRef}
+          userName={userName}
+          userPhone={userPhone}
           onLogout={handleLogout}
           onShowNotification={triggerNotification}
         />
